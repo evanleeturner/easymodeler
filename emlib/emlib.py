@@ -14,7 +14,7 @@ import logging
 import datetime
 from matplotlib.dates import MONDAY, SATURDAY
 from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter, YearLocator, num2date, date2num
-from sas7bdat import SAS7BDAT
+
 
 FORMAT = '%(levelname)s -%(lineno)s- %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
