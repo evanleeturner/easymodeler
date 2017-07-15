@@ -13,8 +13,8 @@ import scipy
 import logging
 import datetime
 from matplotlib.dates import MONDAY, SATURDAY
-from matplotlib.dates import MonthLocator , WeekdayLocator ,DateFormatter, YearLocator, num2date, date2num
-from sas7bdat import SAS7BDAT
+from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter, YearLocator, num2date, date2num
+
 
 FORMAT = '%(levelname)s -%(lineno)s- %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -123,12 +123,12 @@ def mmddyyyy2date(datestr):
      <type 'datetime.date'>
      
     '''
-    date = datetime.date(int(datestr[6:]),int(datestr[:2]),int(datestr[3:5]))
+    date = datetime.date(int(datestr[6:]), int(datestr[:2]), int(datestr[3:5]))
 
     return date
 
 
-def GFSingle(mean,stdev,model):
+def GFSingle(mean, stdev, model):
     '''
     Test fitness of single model dT
 
@@ -162,9 +162,9 @@ def GFSingle(mean,stdev,model):
     else:
         WobsE = obsE
 
-    WMSE = diff2 / (math.pow(WobsE,2))
-    MSE = math.pow(((obs - model)),2)
-    SS = math.pow(((obsE - obs)),2)
+    WMSE = diff2 / (math.pow(WobsE, 2))
+    MSE = math.pow(((obs - model)), 2)
+    SS = math.pow(((obsE - obs)), 2)
     if SS > 0:
         adjr2 = MSE/SS
     else:
@@ -175,13 +175,13 @@ def GFSingle(mean,stdev,model):
     else:
         RANGE = 0
         if (model < (obs - obsE)):
-            MSER = math.pow(((obs - obsE) - model),2)
+            MSER = math.pow(((obs - obsE) - model), 2)
         else:
-            MSER = math.pow(((obs + obsE) - model),2)
+            MSER = math.pow(((obs + obsE) - model), 2)
 
     #emlog.debug(str((obs - obsE)) + "\t"+str(model)+"\t"+str((obs + obsE))+"\t"+str(RANGE))
 
-    return MSE,WMSE,RANGE,MSER,SS, adjr2
+    return MSE, WMSE, RANGE, MSER, SS, adjr2
                
 def GFModel(model, Observation):
     """Fits Model results to Observation
@@ -235,7 +235,7 @@ def GFModel(model, Observation):
                 matches+=1
                 O.append(obsXM[indexobs])
                 E.append(model.computed[indexsim-1])
-                a,b,c,d, e, f= GFSingle(obsXM[indexobs],obsXE[indexobs],model.computed[indexsim-1][0])
+                a, b, c, d, e, f= GFSingle(obsXM[indexobs], obsXE[indexobs], model.computed[indexsim-1][0])
                 MSE+=a
                 WMSE+=b
                 RANGE+=c
@@ -244,14 +244,14 @@ def GFModel(model, Observation):
                 adjr2 +=f
                 break
         indexobs +=1
-    WMSE = round(math.sqrt(WMSE),1)
+    WMSE = round(math.sqrt(WMSE), 1)
     
     if RANGE > 0:  #avoid divide by zero
-        RANGE = round((100 * float(RANGE)/matches),1)
+        RANGE = round((100 * float(RANGE)/matches), 1)
 
 
 
-    MSER = round(math.sqrt(MSER),1)
+    MSER = round(math.sqrt(MSER), 1)
     
     Xtot = obsX/obsC
     Xtot= math.sqrt(Xtot)
@@ -262,12 +262,12 @@ def GFModel(model, Observation):
     RMSD = 1 - (MSE/Xtot)
     if RMSD < 0:
         RMSD = 0.0
-    RMSD = round((RMSD * 100),1)
-    MSE = round(MSE,3)
-    Xtot = round(Xtot,3)
-    Xtot= round(math.sqrt(Xtot),3)
+    RMSD = round((RMSD * 100), 1)
+    MSE = round(MSE, 3)
+    Xtot = round(Xtot, 3)
+    Xtot= round(math.sqrt(Xtot), 3)
     emlog.debug("GFMODEL #"+str(matches) +" Xtot"+str(Xtot)+" RMSD%:"+str(RMSD)+" RMSE:"+str(MSE)+" RANGE%"+str(RANGE)+" WMSE:"+str(WMSE))
-    return Fitness([matches,MSE,WMSE,RANGE,MSER,O,E,RMSD,Xtot])
+    return Fitness([matches, MSE, WMSE, RANGE, MSER, O, E, RMSD, Xtot])
 
 def EMDraw(GraphOpt,x,y,z=None):
     """
@@ -280,12 +280,12 @@ def EMDraw(GraphOpt,x,y,z=None):
     plt.set_xlabel = GraphOpt.xlabel
     plt.set_ylabel = GraphOpt.ylabel
     if GraphOpt.graph == "ts":
-        plt.plot(x,y)
+        plt.plot(x, y)
     if GraphOpt.graph == 'fp':
-        plt.plot(x,y)     
+        plt.plot(x, y)     
     if GraphOpt.graph == '3d':
         ax = Axes3D(fig)
-        ax.plot(x,y,z)
+        ax.plot(x, y, z)
         
     plt.show(block=opts.block)
 
@@ -294,11 +294,11 @@ class dtInput:
     """
     Internal structure for handling dTinput
     """
-    def __init__(self,labels,values):
+    def __init__(self, labels, values):
         self.values = values
         self.labels = labels
         
-    def Val(self,label):
+    def Val(self, label):
         index = 0
         for i in self.labels:
             if i == label:
@@ -417,19 +417,19 @@ class Calibration:
         if filename:
             self.filename = filename
                 
-        myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),'rb'), delimiter=',')
+        myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
         firstline = next(myspamReader)
 
         for row in myspamReader:
                 
-            self.C.append(Coefficient(row[0],val=NuN(row[1]),min=NuN(row[2]),max=NuN(row[3]),isconst=row[4],desc=row[5]))
+            self.C.append(Coefficient(row[0], val=NuN(row[1]), min=NuN(row[2]), max=NuN(row[3]), isconst=row[4], desc=row[5]))
         emlog.info('imported C file')
     def Add(self,label,val=None,min=None,max=None,isconst=None,desc=None):
         """
         Add a single coefficient to the calibration set
         """
-        self.C.append(Coefficient(label,val,min,max,isconst,desc))
-    def Val(self,label):
+        self.C.append(Coefficient(label, val, min, max, isconst, desc))
+    def Val(self, label):
         """
         Returns value of coefficient by label
         """
@@ -461,7 +461,7 @@ class Calibration:
                 
         
             
-    def SetCoeffs(self,Coeffs):
+    def SetCoeffs(self, Coeffs):
         """
         Copy coefficients from array
         """
@@ -477,9 +477,9 @@ class Calibration:
             self.filename = filename
     
         f = open(self.dir+self.filename, 'wb')
-        spamWriter = csv.writer(f, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        spamWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         index = 0
-        series = ["Label","Value","Min","Max","ISConst","Desc"]
+        series = ["Label", "Value", "Min", "Max", "ISConst", "Desc"]
         spamWriter.writerow(series)
     
         for i in self.C:
@@ -503,12 +503,12 @@ class Calibration:
             Ksd 	2.2 	0.9 	7.0 	False 	
 
         """
-        print "Label\tValue\tMin\tMax\tISConst\tDesc"
+        print("Label\tValue\tMin\tMax\tISConst\tDesc")
         for i in self.C:
             i.Print()
         
 
-    def GetC(self,tag):
+    def GetC(self, tag):
         """
         Return a single :class:`emlib.Coefficient` structure by label
         
@@ -606,8 +606,8 @@ class Coefficient:
         if self.isconst:
             return
         if (self.min and self.max) and (self.min <= self.max):
-            self.var = np.random.uniform(self.min,self.max)
-    def SetRange(self,min,max):
+            self.var = np.random.uniform(self.min, self.max)
+    def SetRange(self, min, max):
         """
         Reset our min and max allowable values for Coefficient.  This is useful for Monte Carlo algorithms that will tune each coefficient during the calibration process.
         
@@ -623,7 +623,7 @@ class Coefficient:
         """
         Prints Coefficient structure to STDOUT.
         """
-        print self.label,'\t',self.var,'\t',self.min,'\t',self.max,'\t',self.isconst,'\t',self.desc
+        print(self.label, '\t', self.var, '\t', self.min, '\t', self.max, '\t', self.isconst, '\t', self.desc)
     def Get(self):
         """
         Returns entire Coefficient structure as an array list.
@@ -632,7 +632,7 @@ class Coefficient:
         :returns: label,var,min,max,isconst,desc
         :rtype: list
         """
-        return [self.label,self.var,self.min,self.max,self.isconst,self.desc]
+        return [self.label, self.var, self.min, self.max, self.isconst, self.desc]
     
             
   
@@ -734,14 +734,14 @@ class Observation:
                         self.X.append(newlist)
             
         else:
-            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),'rb'), delimiter=',')
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
             firstline = next(myspamReader)
             
             emlog.debug(firstline)
             col = firstline.index(self.label)  #setup the value of interest
             emlog.debug("New OBS for value:"+str(self.label)+" COLMS:"+str(col)+" "+str(self.dir)+str(self.filename))
             for row in myspamReader:
-                date = datetime.datetime.combine(mmddyyyy2date(row[0]),datetime.time(0,0))
+                date = datetime.datetime.combine(mmddyyyy2date(row[0]), datetime.time(0, 0))
                 if date in self.T:  # if we already have the same date then insert new obs
                     if row[col] != '': #only insert if there is a value
                         self.X[len(self.T)-1].append(NuN(row[col]))
@@ -769,17 +769,17 @@ class Observation:
         """
         plt.figure()
         plt.suptitle(self.filename)
-        plt.plot(self.T,self.XM, 'ro', color='grey')
-        plt.errorbar(self.T,self.XM, yerr=self.XE, color='grey',fmt='o', linewidth=1.4)
+        plt.plot(self.T, self.XM, 'ro', color='grey')
+        plt.errorbar(self.T, self.XM, yerr=self.XE, color='grey', fmt='o', linewidth=1.4)
         plt.legend([self.label])
         plt.show(block=block)
     def Print(self):
         index = 0
-        print self.label, " from ", self.dir + self.filename
+        print(self.label, " from ", self.dir + self.filename)
         
         for i in self.T:
-            print i, "M: ",self.XM[index], "E:", self.XE[index]
-            print "Values:\t\t", self.X[index]
+            print(i, "M: ", self.XM[index], "E:", self.XE[index])
+            print("Values:\t\t", self.X[index])
             index+=1
 
 class TimeSeries:
@@ -913,12 +913,12 @@ class TimeSeries:
             hastime = 0
             for row in self.sastmp[1:]:
                 myrow = []
-                if type(row[1]) == datetime.time:
+                if isinstance(row[1], datetime.time):
                     hastime = 1
                     self.T.append(datetime.datetime.combine(row[0], row[1]))
                     for i in range(len(self.labels))[2:]:
-                        if type(i) == None:
-                            print "found none"
+                        if isinstance(i, None):
+                            print("found none")
                             myrow.append(np.nan)
                         else:
                             myrow.append(row[i]) 
@@ -926,8 +926,8 @@ class TimeSeries:
                 else:
                     self.T.append(row[0])   
                     for i in range(len(self.labels))[1:]:
-                        if type(i) == None:
-                            print "found none"
+                        if isinstance(i, None):
+                            print("found none")
                             myrow.append(np.nan)
                         else:
                             myrow.append(row[i])
@@ -947,7 +947,7 @@ class TimeSeries:
             
             
         if self.fformat == "csv":        
-            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),'rb'), delimiter=',')
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
             self.labels = next(myspamReader)
             emlog.debug("New INPUT table "+str(self.dir)+str(self.filename)+str(self.labels))
             for row in myspamReader:
@@ -977,7 +977,7 @@ class TimeSeries:
         
         """
         plt.figure()
-        plt.plot(self.T,self.Rows)
+        plt.plot(self.T, self.Rows)
         plt.legend(self.labels)
         plt.suptitle(self.filename)
         plt.show(block=block)
@@ -993,12 +993,12 @@ class TimeSeries:
                 emlog.warn(str(column)+" not in table. Try:"+str(self.labels))
                 return
             col = self.labels.index(column)
-            print "Date\t"+column
+            print("Date\t"+column)
             for i in range((len(self.T))):
-                print self.T[i],"\t",self.Rows[i][col]
+                print(self.T[i], "\t", self.Rows[i][col])
         else:
             for i in range((len(self.T))):
-                print self.T[i],"\t",self.Rows[i]
+                print(self.T[i], "\t", self.Rows[i])
     def GetLabels(self):
         """
         Simple procedure to get array of string labels
@@ -1018,7 +1018,7 @@ class TimeSeries:
    
         return self.labels
     
-    def Get(self,columnLabel):
+    def Get(self, columnLabel):
         """
         Return a column as array.  
         
@@ -1127,15 +1127,15 @@ class Model:
             self.dt = dt
         else:
             self.dt = 1
-        self.myodesolve.set_integrator(self.algorithm, method=self.method, order=self.order,nsteps=self.nsteps)
+        self.myodesolve.set_integrator(self.algorithm, method=self.method, order=self.order, nsteps=self.nsteps)
         emlog.debug('Integrator:'+self.algorithm+"/"+self.method+" order:"+str(self.order)+" nsteps:"+str(self.nsteps)+" dt:"+str(self.dt))
     def Integrate(self,initial,maxdt=None,Calibration=None,TimeSeries=None,start=None,end=None, dt=None):
 
         computed = []
         computedT = []
         
-        self.myodesolve.set_initial_value(initial,0)
-        emlog.debug("ODEINT Initials:"+"".join(map(str,initial)))
+        self.myodesolve.set_initial_value(initial, 0)
+        emlog.debug("ODEINT Initials:"+"".join(map(str, initial)))
 
         if dt:
             self.dt = dt
@@ -1183,24 +1183,24 @@ class Model:
             emlog.debug("Passing Cs:"+str(Calibration.GetLabels()))
         
         tcount = 0
-        for i in range(s,e,1):
+        for i in range(s, e, 1):
             #print s, e, i
             if TimeSeries and Calibration:
-                self.myodesolve.set_f_params(dtInput(TimeSeries.labels,TimeSeries.Rows[i]),Calibration)
+                self.myodesolve.set_f_params(dtInput(TimeSeries.labels, TimeSeries.Rows[i]), Calibration)
 
             elif TimeSeries and not Calibration:
-                    self.myodesolve.set_f_params(dtInput(TimeSeries.labels,TimeSeries.Rows[i]),None)
+                    self.myodesolve.set_f_params(dtInput(TimeSeries.labels, TimeSeries.Rows[i]), None)
             elif Calibration and not TimeSeries:
-                self.myodesolve.set_f_params(None,Calibration)
+                self.myodesolve.set_f_params(None, Calibration)
             elif not Calibration and not TimeSeries:
-                self.myodesolve.set_f_params(None,None)
+                self.myodesolve.set_f_params(None, None)
                 
   
                 
             
                 
             self.myodesolve.integrate(self.myodesolve.t + self.dt)
-            self.myodesolve.set_initial_value(self.myodesolve.y,self.myodesolve.t)
+            self.myodesolve.set_initial_value(self.myodesolve.y, self.myodesolve.t)
             if ((tcount % 500) == 0):
                 emlog.debug( "Integration dT:"+str(tcount)+" of "+str(e - s)+" Remaining:"+str(e - s - tcount))
         
@@ -1230,16 +1230,16 @@ class Model:
         if graph == 'ts':
             plt.figure()
             plt.suptitle("Computed Integral")
-            plt.plot(self.computedT,self.computed)
+            plt.plot(self.computedT, self.computed)
             plt.show(block=block)
             
         if graph == 'fp':
             plt.figure()
             plt.suptitle("Computed Integral")
             if order:
-                plt.plot(self.computed[:,int(order[0])],self.computed[:,int(order[1])])
+                plt.plot(self.computed[:, int(order[0])], self.computed[:, int(order[1])])
             else:
-                plt.plot(self.computed[:,0],self.computed[:,1])
+                plt.plot(self.computed[:, 0], self.computed[:, 1])
             plt.show(block=block)
 
         if graph == '3d':
@@ -1249,10 +1249,10 @@ class Model:
             ax = Axes3D(fig)
             fig.suptitle("Computed Integral")
             if order:
-                ax.plot(self.computed[:,int(order[0])],self.computed[:,int(order[1])],self.computed[:,int(order[2])],label="3D Plot")
+                ax.plot(self.computed[:, int(order[0])], self.computed[:, int(order[1])], self.computed[:, int(order[2])], label="3D Plot")
             else:
                 
-                ax.plot(self.computed[:,0],self.computed[:,1],self.computed[:,2],label="3D Plot")
+                ax.plot(self.computed[:, 0], self.computed[:, 1], self.computed[:, 2], label="3D Plot")
             plt.show(block=block)
 
     def Validate(self,Observation,graph=False, title="Computed Integral",ylabel='',xlabel=''
@@ -1278,7 +1278,7 @@ class Model:
         .. note::  Model is assumed to be integrated via :func:`Model.Integrate` and results stored in Model.computed
          
         """
-        self.fit = GFModel(self,Observation)
+        self.fit = GFModel(self, Observation)
         if graph:
             mondays = WeekdayLocator(MONDAY)
             months = MonthLocator()
@@ -1303,9 +1303,9 @@ class Model:
             if xlim:
                 plt.ylim(xlim)
             '''ax.plot(self.computedT,self.computed, linecolor, linewidth=linewidth)'''
-            ax.plot(self.computedT,self.computed, linecolor, linewidth=linewidth)
-            ax.plot(Observation.T,Observation.XM, 'ro', color='grey')
-            ax.errorbar(Observation.T,Observation.XM, yerr=Observation.XE, color='grey',fmt='o', linewidth=1.4)
+            ax.plot(self.computedT, self.computed, linecolor, linewidth=linewidth)
+            ax.plot(Observation.T, Observation.XM, 'ro', color='grey')
+            ax.errorbar(Observation.T, Observation.XM, yerr=Observation.XE, color='grey', fmt='o', linewidth=1.4)
             DefaultSize = fig.get_size_inches()
             labels = ax.get_xticklabels()
 
@@ -1350,24 +1350,24 @@ class Model:
         """
         if not Algorithm:
             emlog.warn("No fitness method provided, assuming GF_BruteForceMSE")
-            return GF_BruteForceMSE(self,Calibration,Observation,runs,TimeSeries,start,end,dt)
+            return GF_BruteForceMSE(self, Calibration, Observation, runs, TimeSeries, start, end, dt)
         else:
             emlog.debug("Applying fitness function:"+str(Algorithm))
 
-            return Algorithm(self,Calibration,Observation,runs,TimeSeries,start,end,dt)     
+            return Algorithm(self, Calibration, Observation, runs, TimeSeries, start, end, dt)     
         
 def GF_BruteForceMSE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
-    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+    Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
     GF = Model.Validate(Observation)
     bestMSE = GF.MSE
     for i in range(maxruns-1):
         testingC.Randomize()
-        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+        Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end, dt=dt)
         GF = Model.Validate(Observation)
         if GF.MSE < bestMSE:
-            print "New Best Calibration"
+            print("New Best Calibration")
             Calibration = copy.deepcopy(testingC)
             Calibration.Print()
             bestMSE = GF.MSE
@@ -1376,13 +1376,13 @@ def GF_BruteForceMSE(Model,Calibration,Observation,maxruns,TimeSeries=None,start
 def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
-    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+    Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end, dt=dt)
     GF = Model.Validate(Observation)
     bestMSE = GF.MSE
     bestRANGE = GF.RANGE
     for i in range(maxruns-1):
         testingC.Randomize()
-        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+        Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
         GF = Model.Validate(Observation)
         if (GF.MSE < bestMSE) and (GF.RANGE > bestRANGE) :
             emlog.info("New Best Calibration")
@@ -1397,16 +1397,16 @@ def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,
 def GF_BruteForceRMSD(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
-    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+    Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end, dt=dt)
     GF = Model.Validate(Observation)
     bestRMSD = GF.RMSD
     orgRMSD = GF.RMSD
     for i in range(maxruns-1):
         testingC.Randomize()
-        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+        Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
         GF = Model.Validate(Observation)
         if (GF.RMSD > bestRMSD) :
-            print ("New Best Calibration:" +str(GF.RMSD) + " prev:" + str(bestRMSD) + " orig:" +str(orgRMSD))
+            print(("New Best Calibration:" +str(GF.RMSD) + " prev:" + str(bestRMSD) + " orig:" +str(orgRMSD)))
             Calibration = copy.deepcopy(testingC)
             Calibration.Print()
             bestRMSD = GF.RMSD
@@ -1438,7 +1438,7 @@ class Fitness:
     This is an internal :mod:`emlib` structure for housing Goodness of Fit statistics.
     """
     _count = 0
-    def __init__(self,fit):
+    def __init__(self, fit):
         self.__class__._count += 1
         self.ID = self.__class__._count
         self.matches = fit[0]
@@ -1455,7 +1455,7 @@ class Fitness:
         """
         Print all statistics to STDOUT
         """
-        print("GFMODEL #"+str(self.matches)+" Xtot:"+str(self.Xtot)+" RMSD:"+str(self.RMSD)+" RMSE:"+str(self.MSE)+" RANGE%"+str(self.RANGE)+" MSER:"+str(self.MSER)+" WMSE:"+str(self.WMSE))
+        print(("GFMODEL #"+str(self.matches)+" Xtot:"+str(self.Xtot)+" RMSD:"+str(self.RMSD)+" RMSE:"+str(self.MSE)+" RANGE%"+str(self.RANGE)+" MSER:"+str(self.MSER)+" WMSE:"+str(self.WMSE)))
 
 
 
