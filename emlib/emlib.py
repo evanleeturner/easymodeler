@@ -947,7 +947,7 @@ class TimeSeries:
             
             
         if self.fformat == "csv":        
-            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rt'), delimiter=',')
             self.labels = next(myspamReader)
             emlog.debug("New INPUT table "+str(self.dir)+str(self.filename)+str(self.labels))
             for row in myspamReader:
