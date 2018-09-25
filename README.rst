@@ -1,7 +1,8 @@
 EasyModeler is a package for calibration and
 validation of Ordinary Differential Equations ODEs to sample data.
-[![DOI](https://zenodo.org/badge/32808541.svg)](https://zenodo.org/badge/latestdoi/32808541)
 
+.. image:: https://zenodo.org/badge/32808541.svg
+   :target: https://zenodo.org/badge/latestdoi/32808541
 
 
 Requirements
