@@ -33,25 +33,25 @@ def NuN(value, Type=None):
     :type Type: float,int,str,...
     :returns: value
     :rtype: float,numpy.nan,str,...
-    
-    
+
+
     **Advantages**:
      - This function is useful in sanitizing text input files.
 
     **Drawbacks**:
      - Does not alert calling function if conversion failed.
-    
+
     :Example:
-    
+
     If value(str) is "NaN"  or "None", **NuN** will return *numpy.nan*
-    
+
      >>> toTest = "NaN"
      >>> sanitized = NuN(toTest)
      >>> numpy.isnan(sanitized)
      True
 
     **NuN** will try to convert value (str) into a float.  If this is unsuccessful **NuN** will return the string.
-     
+
      >>> a = "3.4"
      >>> b = "three point four"
      >>> a = NuN(a)
@@ -77,7 +77,7 @@ def NuN(value, Type=None):
      >>> integer = NuN(string, Type=int)
      >>> type(integer)
      <type 'int'>
-     
+
     '''
     if not value:
         return np.nan
@@ -102,26 +102,26 @@ def NuN(value, Type=None):
 def mmddyyyy2date(datestr):
     '''
     Converts mm/dd/yyyy str into a :class:`datetime.date` object
-    
+
     :param datestr: The mm/dd/yyyy string to convert.
     :type datestr: str
     :returns: date
     :rtype: datetime.date
-    
+
     Method converts a date string in the form mm/dd/yyyy into a :class:`datetime.date` object.
     Text deliminators are expected in the input string.
-    
+
     :Example:
-    
+
     Converting a datestring to :class:`datetime.date` object:
-    
+
      >>> toTest = "05/20/2013"
      >>> date = emlib.mmddyyyy2date(toTest)
      >>> print date
      2013-05-20
      >>> type(date)
      <type 'datetime.date'>
-     
+
     '''
     date = datetime.date(int(datestr[6:]), int(datestr[:2]), int(datestr[3:5]))
 
@@ -132,23 +132,23 @@ def GFSingle(mean, stdev, model):
     '''
     Test fitness of single model dT
 
-    
+
     :param mean: Observation Mean
     :type mean: float
     :param stdev: Observation STDEV
     :type stdev: float
     :param model: Simulated value **expected**
     :type model: float
-    
+
     :returns: MSE,WMSE,RANGE,MSER
     :rtype: float,float,float,float
-  
+
 
     This is a pattern match program which tests goodness of fit
     for asingle point for models against Observation results.
-    
-    .. note::  This function typically only called by :func:`emlib.GFModel` 
-    
+
+    .. note::  This function typically only called by :func:`emlib.GFModel`
+
 
     '''
     obs = mean
@@ -182,7 +182,7 @@ def GFSingle(mean, stdev, model):
     #emlog.debug(str((obs - obsE)) + "\t"+str(model)+"\t"+str((obs + obsE))+"\t"+str(RANGE))
 
     return MSE, WMSE, RANGE, MSER, SS, adjr2
-               
+
 def GFModel(model, Observation):
     """Fits Model results to Observation
 
@@ -194,7 +194,7 @@ def GFModel(model, Observation):
     :rtype: emlib.Fitness
 
     """
-    obsT = Observation.T 
+    obsT = Observation.T
     obsXM = Observation.XM
     obsXE = Observation.XE
     obsX = 0
@@ -204,10 +204,10 @@ def GFModel(model, Observation):
             obsC += 1
             obsX += (k * k)
 
- 
 
-        
-         
+
+
+
     WMSE = 0
     MSE = 0
     matches = 0
@@ -226,9 +226,9 @@ def GFModel(model, Observation):
     emlog.debug("-STDEV\tEXP\t+STDEV\tISRANGE?")
     for i in obsT:
         indexsim = 0
-    
+
         for k in model.computedT:
-            
+
             indexsim+=1 #we are one index ahead
             #obs happend at the same exact deltaT of model response
             if k == i :
@@ -245,20 +245,20 @@ def GFModel(model, Observation):
                 break
         indexobs +=1
     WMSE = round(math.sqrt(WMSE), 1)
-    
+
     if RANGE > 0:  #avoid divide by zero
         RANGE = round((100 * float(RANGE)/matches), 1)
 
 
 
     MSER = round(math.sqrt(MSER), 1)
-    
+
     Xtot = obsX/obsC
     Xtot= math.sqrt(Xtot)
     if matches > 0:
         MSE = math.sqrt(MSE/matches)
-    
-            
+
+
     RMSD = 1 - (MSE/Xtot)
     if RMSD < 0:
         RMSD = 0.0
@@ -282,11 +282,11 @@ def EMDraw(GraphOpt,x,y,z=None):
     if GraphOpt.graph == "ts":
         plt.plot(x, y)
     if GraphOpt.graph == 'fp':
-        plt.plot(x, y)     
+        plt.plot(x, y)
     if GraphOpt.graph == '3d':
         ax = Axes3D(fig)
         ax.plot(x, y, z)
-        
+
     plt.show(block=opts.block)
 
 
@@ -297,20 +297,20 @@ class dtInput:
     def __init__(self, labels, values):
         self.values = values
         self.labels = labels
-        
+
     def Val(self, label):
         index = 0
         for i in self.labels:
             if i == label:
                 return self.values[index]
-            
+
             index += 1
-        emlog.error('dtInput '+label + ' not found in list')  
-    
+        emlog.error('dtInput '+label + ' not found in list')
+
 class GraphOpt:
     """
     Advanced graphing options to pass to :func:`matplotlib.plt`
-    
+
     """
     _count = 0
     def __init__(self):
@@ -331,23 +331,23 @@ class GraphOpt:
         self.filename = None
         self.graph = None
         self.block = False
-        
+
 class Calibration:
     """
     A collection of :class:`emlib.Coefficient` for a model.
-    
+
     :param coeffs=: list of :class:`emlib.Coefficient`
     :param directory=:  directory
     :param filename=: filename
     :type coeffs=: list,emlib.Coefficient
     :type directory=: str
     :type filename=: str
-    
+
     """
     _count = 0
     def __init__(self, coeffs=None, directory=None ,filename=None):
         self.__class__._count +=1
-        
+
         self.initial = []
         self.ID = self.__class__._count
         emlog.info('New Calibration instance: '+str(self.ID))
@@ -360,42 +360,42 @@ class Calibration:
             self.Read(filename)
         if coeffs:
             self.C = coeffs[:]
-            
+
     def Read(self, filename,directory=None):
         """
         Read Coefficients from CSV file
-        
+
         :param directory=:  directory
         :param filename: filename
         :type directory=: str
         :type filename: str
-    
+
         :Example:
-        
-        We have a CSV file called bcfile.csv in the working directory. 
-        
-        
+
+        We have a CSV file called bcfile.csv in the working directory.
+
+
         +----------+---------+--------+--------+---------+------------+
         |Label     | Value   | min    | Max    | ISConst | Desc       |
         +==========+=========+========+========+=========+============+
         |kbg       |    1    | 0.5    | 1      | 0       |  growth    |
-        +----------+---------+--------+--------+---------+------------+    
-        |kbm       | 0.001   | 0.0001 | .2     | 0       |   mortality| 
+        +----------+---------+--------+--------+---------+------------+
+        |kbm       | 0.001   | 0.0001 | .2     | 0       |   mortality|
         +----------+---------+--------+--------+---------+------------+
         |kdd       |  1      |    0.05| 3      | 0       | depth mort |
-        +----------+---------+--------+--------+---------+------------+   
+        +----------+---------+--------+--------+---------+------------+
         |Bcc       |   20    |        |        | 1       |carrying cap|
-        +----------+---------+--------+--------+---------+------------+    
-        |Ktg       | 0.9     | 0.5    | 15     | 0       |            | 
+        +----------+---------+--------+--------+---------+------------+
+        |Ktg       | 0.9     | 0.5    | 15     | 0       |            |
         +----------+---------+--------+--------+---------+------------+
         |Sopt      |  15     |        |        | 1       |opt salinity|
-        +----------+---------+--------+--------+---------+------------+  
-        |Ksg       |    8    | 6      | 15     | 0       |            |
-        +----------+---------+--------+--------+---------+------------+    
-        |Ksd       | 2.2     | 0.9    | 7      | 0       |            | 
         +----------+---------+--------+--------+---------+------------+
-       
-        
+        |Ksg       |    8    | 6      | 15     | 0       |            |
+        +----------+---------+--------+--------+---------+------------+
+        |Ksd       | 2.2     | 0.9    | 7      | 0       |            |
+        +----------+---------+--------+--------+---------+------------+
+
+
             >>> benthosCal = emlib.Calibration()
             >>> benthosCal.Read(bcfile.csv)
             INFO -243- New Calibration instance: 1
@@ -408,20 +408,20 @@ class Calibration:
             DEBUG -351- C:7 Ksg 8.0
             DEBUG -351- C:8 Ksd 2.2
             INFO -272- imported C file
-            
-            
+
+
         """
         self.C = []
         if directory:
             self.dir = directory
         if filename:
             self.filename = filename
-                
+
         myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
         firstline = next(myspamReader)
 
         for row in myspamReader:
-                
+
             self.C.append(Coefficient(row[0], val=NuN(row[1]), min=NuN(row[2]), max=NuN(row[3]), isconst=row[4], desc=row[5]))
         emlog.info('imported C file')
     def Add(self,label,val=None,min=None,max=None,isconst=None,desc=None):
@@ -437,7 +437,7 @@ class Calibration:
             if i.label == label:
                 return i.var
 
-        
+
         emlog.error('Coefficient '+label + ' not found in list')
     def UpdateC(self,tag,val=None,min=None,max=None,isconst=None,desc=None):
         """
@@ -458,9 +458,9 @@ class Calibration:
                 else:
                     i.isconst = True
                 break
-                
-        
-            
+
+
+
     def SetCoeffs(self, Coeffs):
         """
         Copy coefficients from array
@@ -475,13 +475,13 @@ class Calibration:
             self.dir = directory
         if filename:
             self.filename = filename
-    
+
         f = open(self.dir+self.filename, 'wb')
         spamWriter = csv.writer(f, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         index = 0
         series = ["Label", "Value", "Min", "Max", "ISConst", "Desc"]
         spamWriter.writerow(series)
-    
+
         for i in self.C:
             spamWriter.writerow(i.Get())
 
@@ -490,31 +490,31 @@ class Calibration:
     def Print(self):
         """
         Prints :class:`emlib.Calibration` structure to STDOUT
-       
+
             >>> benthosCal.Print()
             Label	Value	Min	Max	ISConst	Desc
             Kbg 	1.0 	0.5 	1.0 	False   growth
-            Kbm 	0.001 	0.0001 	0.2 	False   mortality 	
+            Kbm 	0.001 	0.0001 	0.2 	False   mortality
             Kdd 	1.0 	0.05 	3.0 	False 	depth mort
             Bcc 	20.0 	nan 	nan 	True 	carrying cap
-            Ktg 	0.9 	0.5 	15.0 	False 	
+            Ktg 	0.9 	0.5 	15.0 	False
             Sopt 	15.0 	nan 	nan 	True 	opt salinity
-            Ksg 	8.0 	6.0 	15.0 	False 	
-            Ksd 	2.2 	0.9 	7.0 	False 	
+            Ksg 	8.0 	6.0 	15.0 	False
+            Ksd 	2.2 	0.9 	7.0 	False
 
         """
         print("Label\tValue\tMin\tMax\tISConst\tDesc")
         for i in self.C:
             i.Print()
-        
+
 
     def GetC(self, tag):
         """
         Return a single :class:`emlib.Coefficient` structure by label
-        
+
         :param tag: Coefficient label
         :type tag: str
-        
+
         :returns: Coefficient
         :rtype: emlib.Coefficient
         """
@@ -524,7 +524,7 @@ class Calibration:
     def Randomize(self):
         """
         Randomizes all coefficients that have **emlib.Coefficient.isconst** set to *False*
-        
+
         .. seealso:: :class:`emlib.Coefficient.Randomize`
         """
         for i in self.C:
@@ -533,11 +533,11 @@ class Calibration:
     def Get(self):
         """
         Return a list of all :class:`emlib.Coefficient` objects.
-        
+
         :returns: list of :class:`emlib.Coefficient`
         :rtype: list
-        
-        
+
+
         """
         tmp = []
         for i in self.C:
@@ -546,19 +546,19 @@ class Calibration:
     def GetLabels(self):
         """
         Return list of all :class:`emlib.Coefficient` labels
-        
-        :returns: : list of labels 
+
+        :returns: : list of labels
         :rtype: list
         """
         tmp = []
         for i in self.C:
             tmp.append(i.label)
         return tmp
-            
+
 class Coefficient:
     """
-    A single parameter coefficient.  
-    
+    A single parameter coefficient.
+
     :param label:     short description
     :param val=:     coefficient value
     :param min=:     minimum value
@@ -571,7 +571,7 @@ class Coefficient:
     :type max=:      float
     :type isconst=:      bool
     :type desc=:      str
-    
+
     """
     _count = 0
     def __init__(self,label,val=None,min=None,max=None,isconst=None,desc=None):
@@ -588,7 +588,7 @@ class Coefficient:
                 self.isconst = bool(isconst)
         else:
             self.isconst = bool(False)
-            
+
 
         self.input = 0
         self.index = 0
@@ -596,11 +596,11 @@ class Coefficient:
         emlog.debug("C:"+str(self.ID)+" " +self.label+" "+str(self.var)+ " "+ str(self.isconst))
     def Randomize(self):
         """
-        Randomizes coefficient between :class:`emlib.Coefficient.min` and :class:`emlib.Coefficient.max` 
+        Randomizes coefficient between :class:`emlib.Coefficient.min` and :class:`emlib.Coefficient.max`
         using :func:`numpy.random.uniform`
-        
+
         If **Coefficient.isconst** is *True* function returns without randomizing.
-        
+
         .. note::  Why do we need a :mod:`boolean` value :class:`emlib.Coefficient.isconst`?  Even though :class:`emlib.Coefficient.min` and :class:`emlib.Coefficient.max`  could exist we may want to set this Coefficient to constant dynamically during a calibration algorithm.
         """
         if self.isconst:
@@ -610,12 +610,12 @@ class Coefficient:
     def SetRange(self, min, max):
         """
         Reset our min and max allowable values for Coefficient.  This is useful for Monte Carlo algorithms that will tune each coefficient during the calibration process.
-        
+
         :param min=:     minimum value
         :param max=:     maximum value
         :type min=:      float
         :type max=:      float
-        
+
         """
         self.min=min
         self.max=max
@@ -627,15 +627,15 @@ class Coefficient:
     def Get(self):
         """
         Returns entire Coefficient structure as an array list.
-        
-        
+
+
         :returns: label,var,min,max,isconst,desc
         :rtype: list
         """
         return [self.label, self.var, self.min, self.max, self.isconst, self.desc]
-    
-            
-  
+
+
+
 class Observation:
     """
     A series of observations and replicates to validate a model.
@@ -649,16 +649,16 @@ class Observation:
     :type filename: str
     :type filename: "csv", "sas"
 
-    
+
     :returns: Observation Object
     :rtype: emlib.Observation
-    
+
     This class object is the generic table structure EasyModeler uses
     to handle validation data via tables.  This class of data differes from
     :class:`emlib.TimeSeries` in that replicates of measurements are made at the same time.
-    This data is used to :func:`emlib.Model.Validate()` a model to observations.   
+    This data is used to :func:`emlib.Model.Validate()` a model to observations.
 
-    
+
     EasyModeler 2  supports comma separated value files *CSV* and *SAS* 7 binary.
 
     :SAS Example:
@@ -678,7 +678,7 @@ class Observation:
     salinity  from  testsas.sas7bdat
     2011-10-21 M:  40.385 E: 0.095
     Values:		[40.289999999999999, 40.289999999999999, 40.479999999999997, 40.479999999999997]
-    
+
     :CSV Example:
 
     - Comma Separated Value files are imported by using the **fformat="csv"** switch, or by not using the **fformat=** option.
@@ -708,7 +708,7 @@ class Observation:
         self.dir = dirname
         self.filename = filename
         if not dirname:
-            self.dir = "" 
+            self.dir = ""
 
 
         sasreader = []
@@ -720,7 +720,7 @@ class Observation:
             emlog.debug(firstline)
             emlog.debug("Searching for "+self.label )
             col = firstline.index(self.label)  #setup the value of interest
-            
+
             for row in sasreader[1:]:
                 date = row[0]
                 if date in self.T:  # if we already have the same date then insert new obs
@@ -732,11 +732,11 @@ class Observation:
                         newlist.append(row[col])
                         self.T.append(date)
                         self.X.append(newlist)
-            
+
         else:
-            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rb'), delimiter=',')
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rt'), delimiter=',')
             firstline = next(myspamReader)
-            
+
             emlog.debug(firstline)
             col = firstline.index(self.label)  #setup the value of interest
             emlog.debug("New OBS for value:"+str(self.label)+" COLMS:"+str(col)+" "+str(self.dir)+str(self.filename))
@@ -754,7 +754,7 @@ class Observation:
         for i in self.X:
             self.XM.append(np.mean(i))  #mean value table
             self.XE.append(np.std(i))   #stdev values
-    
+
 
         emlog.info( "Read file "+self.dir+self.filename+" "+str(len(self.X))+" Observations for value "+self.label)
     def Draw(self, block=True):
@@ -765,7 +765,7 @@ class Observation:
         :type bool: bool
 
         Simple matplotlib plotting wrapper
-        
+
         """
         plt.figure()
         plt.suptitle(self.filename)
@@ -776,7 +776,7 @@ class Observation:
     def Print(self):
         index = 0
         print(self.label, " from ", self.dir + self.filename)
-        
+
         for i in self.T:
             print(i, "M: ", self.XM[index], "E:", self.XE[index])
             print("Values:\t\t", self.X[index])
@@ -785,7 +785,7 @@ class Observation:
 class TimeSeries:
     """
     A series of data in time.
-    
+
     :param dirname: optinal directory
     :param filename: filename
     :param fformat: optional file format
@@ -793,60 +793,60 @@ class TimeSeries:
     :type filename: str
     :type filename: "csv", "sas"
 
-    
+
     :returns: TimeSeries Object
     :rtype: emlib.TimeSeries
-    
-    
+
+
     This class object is the generic table structure EasyModeler uses
     to handle dtInput data via tables.  This class of data differes from
     :class:`emlib.Observation` in that measurements are discrete: only one measurement of a variable is
     made at a specific time.  This data is used to feed a :class:`emlib.Model` with dtInput data.   For validating
     model responses use :class:`emlib.Observation` .
 
-    
+
     EasyModeler 2  supports comma separated value files *CSV* and *SAS* 7 binary.
 
 
-    For CSV files the first row includes the header labels and first column is datetime 
+    For CSV files the first row includes the header labels and first column is datetime
     in the form mm/dd/yyyy.  Future planned expansions will increase this functionality.
 
 
     For SAS files the first column is a SAS datetime object.
-    
+
     :CSV Example:
-    
-    - You have a table of data in the form of a .CSV file stored as **/mydata/monthlyphysical.csv**. 
+
+    - You have a table of data in the form of a .CSV file stored as **/mydata/monthlyphysical.csv**.
       Some of the cells may contain empty *Null* strings:
-    
+
      +----------+---------+--------+
      |DATE      | SALINITY| TEMP   |
-     +==========+=========+========+ 
+     +==========+=========+========+
      |01/20/2013| 30.2    | 22.5   |
-     +----------+---------+--------+    
+     +----------+---------+--------+
      |02/19/2013| 20.2    | 15.3   |
-     +----------+---------+--------+   
+     +----------+---------+--------+
      |03/20/2013|         |    24.2|
-     +----------+---------+--------+   
-    
+     +----------+---------+--------+
+
     - Creating the TimeSeries object::
-     
+
         >>> myData = TimeSeries(dirname="mydata",filename="monthlyphysical.csv")
         DEBUG -202- New INPUT table mydata\monthlyphysical.csv['DATE', 'SALINITY', 'TEMP']
         DEBUG -212- Saved 3 rows and 2 columns
         DEBUG -214- Converted dates to contiguous np.array
         DEBUG -216- Converted input data to contiguous np.array
-     
+
     - EasyModeler separates time and data arrays as a design decision.  EasyModeler converts time to :mod:datetime objects.  To access the date array use the member **.T** ::
-    
+
         >>> print myData.T
         [2013-01-20 2013-02-19 2013-3-20]
-     
+
     :Missing Values:
-    
+
     EasyModeler coverts blank *missing* values in data streams as :class:`numpy.nan` objects.  This is advantageous for plotting and numerical operations.
     Each non-date cell is passed to :func:`emlib.NuN` for conversion to :func:`float` values.
-    
+
     .. seealso::  For more information about how :func:`emlib.NuN` handles empty strings and numerical conversions see it's documentation.
 
     :SAS Example:
@@ -855,23 +855,23 @@ class TimeSeries:
 
      +----------+---------+--------+
      |DATE      | SALINITY| TEMP   |
-     +==========+=========+========+ 
+     +==========+=========+========+
      |21OCT2011 | 40.29   | 23.03  |
-     +----------+---------+--------+    
+     +----------+---------+--------+
      |02NOV2011 | 20.2    | 15.3   |
-     +----------+---------+--------+   
+     +----------+---------+--------+
      |09NOV2011 |         |    24.2|
-     +----------+---------+--------+  
+     +----------+---------+--------+
 
      - Creating the TimeSeries object::
-     
+
         >>> myData = TimeSeries(filename="baywater.sas7bat", fformat="sas")
         INFO -748- New TimeSeries instance: 1
         DEBUG -778- New INPUT table testsas.sas7bdat[u'date', u'station', u'rep', u'TSS', u'CFTSS', u'Cl_a___g_ltr_', u'NH4___mol_l_', u'Nox___mol_l_', u'SiO4___mol_l_', u'Ophos___mol_l_', u'Temp', u'Depth', u'pH', u'DO_', u'DO_mg_l', u'salinity', u'turbidity__ntu_', u'conductivity']
         DEBUG -805- Saved 177 rows and 17 columns
         DEBUG -807- Converted dates to contiguous np.array
         DEBUG -809- Converted input data to contiguous np.array
-    
+
     """
     _count = 0
     def __init__(self,dirname=None,filename=None, fformat="csv"):
@@ -881,13 +881,13 @@ class TimeSeries:
         self.dir = dirname
         self.filename = filename
         self.fformat = fformat
-        
+
         self.labels = []
         if not dirname:
             self.dir = ""
         if filename:
             self._Read()
-            
+
     def _Read(self, filename=None,directory=None, fformat=None):
         self.Rows = []
         self.labels = []
@@ -899,9 +899,9 @@ class TimeSeries:
             self.filename = filename
         if fformat:
             self.fformat = fformat
-        
 
-        
+
+
         if self.fformat == "sas":
             with SAS7BDAT(os.path.join(self.dir, self.filename)) as f:
                 for row in f:
@@ -921,10 +921,10 @@ class TimeSeries:
                             print("found none")
                             myrow.append(np.nan)
                         else:
-                            myrow.append(row[i]) 
-                        
+                            myrow.append(row[i])
+
                 else:
-                    self.T.append(row[0])   
+                    self.T.append(row[0])
                     for i in range(len(self.labels))[1:]:
                         if isinstance(i, None):
                             print("found none")
@@ -938,15 +938,15 @@ class TimeSeries:
                     else:
                         newrow.append(i)
                 self.Rows.append(newrow)
-                
+
             del self.labels[0]
             if hastime:
                 del self.labels[0]
             del self.sastmp
 
-            
-            
-        if self.fformat == "csv":        
+
+
+        if self.fformat == "csv":
             myspamReader = csv.reader(open(os.path.join(self.dir, self.filename), 'rt'), delimiter=',')
             self.labels = next(myspamReader)
             emlog.debug("New INPUT table "+str(self.dir)+str(self.filename)+str(self.labels))
@@ -959,7 +959,7 @@ class TimeSeries:
                     myrow.append(NuN(row[i]))
                 self.Rows.append(myrow)
             del self.labels[0]
-            
+
         emlog.debug("Saved "+str(len(self.T))+" rows and "+str(len(self.labels))+" columns")
         self.T = np.ascontiguousarray(self.T, dtype=object)
         emlog.debug("Converted dates to contiguous np.array")
@@ -974,7 +974,7 @@ class TimeSeries:
         :type bool: bool
 
         Simple matplotlib plotting wrapper
-        
+
         """
         plt.figure()
         plt.plot(self.T, self.Rows)
@@ -984,7 +984,7 @@ class TimeSeries:
     def Print(self,column=None):
         """
         Prints entire TimeSeries, or column, to **STDOUT**.
-        
+
         """
         if column:
             try:
@@ -1002,40 +1002,40 @@ class TimeSeries:
     def GetLabels(self):
         """
         Simple procedure to get array of string labels
-        
-        
+
+
         :returns: list
         :rtype: str
-    
+
         :Example:
-        
+
         - Simple print::
-        
+
             >>> print myTable.GetLabels()
             ['SALINITY', 'TEMP']
-         
+
         """
-   
+
         return self.labels
-    
+
     def Get(self, columnLabel):
         """
-        Return a column as array.  
-        
+        Return a column as array.
+
         :param columnLabel:  The column to return
         :type param: str
-        
-        
+
+
         :returns: list
         :rtype: float,np.Nan,str,...
-    
+
         :Example:
-        
+
         - Simple grab::
-        
+
             >>> salinity =  myTable.Get("SALINITY")
-         
-         
+
+
         """
         try:
             self.labels.index(columnLabel)
@@ -1048,7 +1048,7 @@ class TimeSeries:
             tmp.append(self.Rows[i][col])
         return tmp
 
-    
+
 class Model:
     """
     Class method creates a new ODE model structure.
@@ -1073,7 +1073,7 @@ class Model:
     :Example:
 
      - First declare an ODE_INT function. This will be passed to the :func:`scipy.integrate.odeint` integrator::
-    
+
         def LV_int(initial, dtinput, constants):
             x = initial[0]
             y = initial[1]
@@ -1083,7 +1083,7 @@ class Model:
             D = 1
 
             x_dot = (A * x) - (B * x *y)
-            y_dot = (D * x * y) - (C * y) 
+            y_dot = (D * x * y) - (C * y)
 
             return [x_dot, y_dot]
 
@@ -1093,11 +1093,11 @@ class Model:
      - Pass the ODE function to :class:`emlib.Model`  as::
 
          >>> myModel = emlib.Model(LV_int)
-    
+
     """
     _count = 0
     def __init__(self,ODEFunction,jacobian=None,algorithm=None,method=None,order=None,nsteps=None,dt=None):
-       
+
         self.__class__._count += 1
         self.ID = self.__class__._count
         self.dt = 1
@@ -1133,13 +1133,13 @@ class Model:
 
         computed = []
         computedT = []
-        
+
         self.myodesolve.set_initial_value(initial, 0)
         emlog.debug("ODEINT Initials:"+"".join(map(str, initial)))
 
         if dt:
             self.dt = dt
-        
+
         if TimeSeries and start:
             s = np.where(TimeSeries.T==start)
             if s == []:
@@ -1161,13 +1161,13 @@ class Model:
             if e > len(TimeSeries.T)  - 1:
                 e = len(TimeSeries.T)  - 1
                 emlog.error("Maxruns > input ending, assuming "+str(TimeSeries.T[e]))
-                
+
         if not TimeSeries:
             if maxdt:
                 e = maxdt * int(1 / self.dt) + s
             else:
                 emlog.error("No maxruns specified, exiting!")
-                return 
+                return
 
         if TimeSeries and (start is  None) and  (end is None) :
             '''print "here", start, end'''
@@ -1178,10 +1178,10 @@ class Model:
         else:
             emlog.debug("Ending in "+str(e)+" runs")
 
-            
+
         if Calibration:
             emlog.debug("Passing Cs:"+str(Calibration.GetLabels()))
-        
+
         tcount = 0
         for i in range(s, e, 1):
             #print s, e, i
@@ -1194,24 +1194,24 @@ class Model:
                 self.myodesolve.set_f_params(None, Calibration)
             elif not Calibration and not TimeSeries:
                 self.myodesolve.set_f_params(None, None)
-                
-  
-                
-            
-                
+
+
+
+
+
             self.myodesolve.integrate(self.myodesolve.t + self.dt)
             self.myodesolve.set_initial_value(self.myodesolve.y, self.myodesolve.t)
             if ((tcount % 500) == 0):
                 emlog.debug( "Integration dT:"+str(tcount)+" of "+str(e - s)+" Remaining:"+str(e - s - tcount))
-        
+
             tcount+=1
             if TimeSeries:
                 computedT.append(TimeSeries.T[i])
             else:
                 computedT.append(i+s)
             computed.append(self.myodesolve.y)
-            
-        
+
+
         self.computed = np.ascontiguousarray(computed)
         self.computedT = computedT
         emlog.debug("Completed Integration, created np.array shape:"+str(self.computed.shape))
@@ -1224,7 +1224,7 @@ class Model:
         :type bool: bool
 
         Simple matplotlib plotting wrapper
-        
+
         """
 
         if graph == 'ts':
@@ -1232,7 +1232,7 @@ class Model:
             plt.suptitle("Computed Integral")
             plt.plot(self.computedT, self.computed)
             plt.show(block=block)
-            
+
         if graph == 'fp':
             plt.figure()
             plt.suptitle("Computed Integral")
@@ -1251,7 +1251,7 @@ class Model:
             if order:
                 ax.plot(self.computed[:, int(order[0])], self.computed[:, int(order[1])], self.computed[:, int(order[2])], label="3D Plot")
             else:
-                
+
                 ax.plot(self.computed[:, 0], self.computed[:, 1], self.computed[:, 2], label="3D Plot")
             plt.show(block=block)
 
@@ -1262,21 +1262,21 @@ class Model:
 
         :param Observation: The Observation class
         :type Observation: emlib.Observation
-    
+
         :returns: fitness object
         :rtype: emlib.Fitness
 
 
         This function is a wrapper for the functions :func:`emlib.GFModel` and :func:`emlib.GFSingle` .
         Model simulation output is tested against historical Observations.  A series of Goodness of Fit statistics are returned as an :class:`emlib.Fitness` structure.
-        
+
         :Example:
-        
+
         >>> Model.Integrate(calibration.initial,
                              Calibration=calibration)
 
         .. note::  Model is assumed to be integrated via :func:`Model.Integrate` and results stored in Model.computed
-         
+
         """
         self.fit = GFModel(self, Observation)
         if graph:
@@ -1292,12 +1292,12 @@ class Model:
             plt.ylabel(ylabel)
             plt.xlabel(xlabel)
             years = YearLocator()
-            
+
             ax.xaxis.set_major_locator(months)
             ax.xaxis.set_major_formatter(MYFmt)
             ax.xaxis.set_minor_locator(months)
 
-            
+
             if ylim:
                 plt.ylim(ylim)
             if xlim:
@@ -1314,7 +1314,7 @@ class Model:
             if savefig:
                 plt.savefig(savefig, bbox_inches='tight', dpi = (500))
             plt.show()
-            
+
         return self.fit
     def Calibrate(self,Calibration,Observation,runs=None,TimeSeries=None,Algorithm=None,start=None,end=None,dt=None):
         """
@@ -1334,9 +1334,9 @@ class Model:
         :type start: datetime.date,int
         :param end: optional simulation end
         :type end: datetime.date,int
-        
+
         :returns: Model Calibration
-        :rtype: emlib.Calibration       
+        :rtype: emlib.Calibration
 
         This function will integrate the current model *maxruns* times using the supplied **Algorithm**.  If no algorithm is supplied :func:`GF_BruteForceMSE` is assumed.
 
@@ -1354,8 +1354,8 @@ class Model:
         else:
             emlog.debug("Applying fitness function:"+str(Algorithm))
 
-            return Algorithm(self, Calibration, Observation, runs, TimeSeries, start, end, dt)     
-        
+            return Algorithm(self, Calibration, Observation, runs, TimeSeries, start, end, dt)
+
 def GF_BruteForceMSE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
@@ -1372,7 +1372,7 @@ def GF_BruteForceMSE(Model,Calibration,Observation,maxruns,TimeSeries=None,start
             Calibration.Print()
             bestMSE = GF.MSE
     return Calibration
-        
+
 def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
@@ -1393,7 +1393,7 @@ def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,
         else:
             emlog.info("Int:" +str(i) + " RMSD Current: "+ str(GF.RMSD) + " Best:" + str(bestRMSD) + " Orig:" +str(orgRMSD))
     return Calibration
-        
+
 def GF_BruteForceRMSD(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
 
     testingC = copy.deepcopy(Calibration)
@@ -1413,28 +1413,28 @@ def GF_BruteForceRMSD(Model,Calibration,Observation,maxruns,TimeSeries=None,star
         else:
             emlog.info("Int:" +str(i) + " RMSD Current: "+ str(GF.RMSD) + " Best:" + str(bestRMSD) + " Orig:" +str(orgRMSD))
 
-            
+
     return Calibration
-      
+
 
 class Fitness:
     """
     Goodness of Fit Structure
-    
-    
+
+
     :param fit: list of fitness measurements
     :type fit: list
-    
+
     :Attributes:
-    
-    * *Fitness.matches*         Number of fitness values 
+
+    * *Fitness.matches*         Number of fitness values
     * *Fitness.MSE*             Mean Square Error
     * *Fitness.WMSE*            Weighted Mean Square Error
     * *Fitness.RANGE*           % Inside STDEV
     * *Fitness.MSER*            Mean Square Error outside STDEV
     * *Fitness.O*               list of observed means
     * *Fitness.E*               list of expected values
-        
+
     This is an internal :mod:`emlib` structure for housing Goodness of Fit statistics.
     """
     _count = 0
@@ -1456,6 +1456,3 @@ class Fitness:
         Print all statistics to STDOUT
         """
         print(("GFMODEL #"+str(self.matches)+" Xtot:"+str(self.Xtot)+" RMSD:"+str(self.RMSD)+" RMSE:"+str(self.MSE)+" RANGE%"+str(self.RANGE)+" MSER:"+str(self.MSER)+" WMSE:"+str(self.WMSE)))
-
-
-
