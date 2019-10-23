@@ -1,0 +1,45 @@
+EasyModeler distribution procedures
+https://pypi.python.org/pypi/EasyModeler
+3/15/2016
+
+
+
+help with sdist:
+http://www.scotttorborg.com/python-packaging/minimal.html
+
+
+1.  How to compile the autodocs:  
+
+Run:
+C:\Users\eturner\Box Sync\Evans CMSS Research\EasyModeler\PythonCMD.bat
+
+execute: "make html"
+
+
+The HTML is built in:
+"C:\Users\eturner\Box Sync\Evans CMSS Research\EasyModeler\_build\html"
+and can be copied and dropped directly to dropbox under /home/public/site
+(account evanlee.turner@gmail.com)
+
+2. Installing the development copy on your own computer:
+Run:
+C:\Users\eturner\Box Sync\Evans CMSS Research\EasyModeler\install easymodeler.cmd
+
+
+3.  Creating sdist copy;
+
+3.1.  Must increment the version number of setup.py and edit readme.rst under
+C:\Users\eturner\Box Sync\Evans CMSS Research\EasyModeler\EasyModeler\
+
+3.2.  Run:  
+../PythonCMD.bat
+cd easymodelder
+python setup.py sdist 
+
+
+4.  Uploading new sdist to pypi:
+
+Run:
+../PythonCMD.bat
+cd easymodelder
+python setup.py sdist upload
