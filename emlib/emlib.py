@@ -17,7 +17,7 @@ from matplotlib.dates import MonthLocator, WeekdayLocator, DateFormatter, YearLo
 
 
 FORMAT = '%(levelname)s -%(lineno)s- %(message)s'
-logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+logging.basicConfig(format=FORMAT, level=logging.INFO)
 emlog = logging.getLogger('EASYMODEL')
 
 
@@ -228,10 +228,9 @@ def GFModel(model, Observation):
         indexsim = 0
 
         for k in model.computedT:
-
             indexsim+=1 #we are one index ahead
             #obs happend at the same exact deltaT of model response
-            if k == i :
+            if k == i.date() :
                 matches+=1
                 O.append(obsXM[indexobs])
                 E.append(model.computed[indexsim-1])
@@ -301,11 +300,12 @@ class dtInput:
     def Val(self, label):
         index = 0
         for i in self.labels:
+            #print ("scrolling through labels",i)
             if i == label:
                 return self.values[index]
 
             index += 1
-        emlog.error('dtInput '+label + ' not found in list')
+        emlog.error('dtInput '+label + ' not found in list' + str(self.labels) + ' with values ' + str(self.values)) 
 
 class GraphOpt:
     """
@@ -1184,7 +1184,7 @@ class Model:
 
         tcount = 0
         for i in range(s, e, 1):
-            #print s, e, i
+            #print (s, e, i)
             if TimeSeries and Calibration:
                 self.myodesolve.set_f_params(dtInput(TimeSeries.labels, TimeSeries.Rows[i]), Calibration)
 
@@ -1216,7 +1216,7 @@ class Model:
         self.computedT = computedT
         emlog.debug("Completed Integration, created np.array shape:"+str(self.computed.shape))
         return
-    def Draw(self, block=True,graph='ts',order=None):
+    def Draw(self, block=True,graph='ts',order=None, legend=None):
         """
         Plot Computed Series
 
@@ -1231,7 +1231,8 @@ class Model:
             plt.figure()
             plt.suptitle("Computed Integral")
             plt.plot(self.computedT, self.computed)
-            plt.show(block=block)
+            if legend:
+                plt.legend(legend)
 
         if graph == 'fp':
             plt.figure()
@@ -1256,7 +1257,7 @@ class Model:
             plt.show(block=block)
 
     def Validate(self,Observation,graph=False, title="Computed Integral",ylabel='',xlabel=''
-                 ,ylim=False, xlim=False, linecolor='k',linewidth=2.0,savefig=False):
+                 ,ylim=False, xlim=False, linecolor='k',linewidth=2.0,savefig=False, legend=None):
         """
         Validate model output to observed data
 
@@ -1293,8 +1294,8 @@ class Model:
             plt.xlabel(xlabel)
             years = YearLocator()
 
-            ax.xaxis.set_major_locator(months)
-            ax.xaxis.set_major_formatter(MYFmt)
+            ax.xaxis.set_major_locator(years)
+            ax.xaxis.set_major_formatter(yearFmt)
             ax.xaxis.set_minor_locator(months)
 
 
@@ -1302,15 +1303,20 @@ class Model:
                 plt.ylim(ylim)
             if xlim:
                 plt.ylim(xlim)
+           
             '''ax.plot(self.computedT,self.computed, linecolor, linewidth=linewidth)'''
-            ax.plot(self.computedT, self.computed, linecolor, linewidth=linewidth)
-            ax.plot(Observation.T, Observation.XM, 'ro', color='grey')
+            ax.plot(self.computedT, self.computed,linewidth=linewidth)
+            ax.plot(Observation.T, Observation.XM, 'ro')
             ax.errorbar(Observation.T, Observation.XM, yerr=Observation.XE, color='grey', fmt='o', linewidth=1.4)
             DefaultSize = fig.get_size_inches()
+            fig.dpi = 500
             labels = ax.get_xticklabels()
-
-            plt.setp(labels, 'rotation', 45, fontsize = 10)
-            fig.set_size_inches( (DefaultSize[0]*2, DefaultSize[1]*1) )
+            if legend:
+                ax.legend(legend)
+            plt.setp(labels, 'rotation', 45, fontsize = 12)
+            plt.rc('axes', titlesize=12)     # fontsize of the axes title
+            plt.rc('axes', labelsize=12)
+            fig.set_size_inches( (DefaultSize[0]*4, DefaultSize[1]*2) )
             if savefig:
                 plt.savefig(savefig, bbox_inches='tight', dpi = (500))
             plt.show()
@@ -1384,14 +1390,13 @@ def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,
         testingC.Randomize()
         Model.Integrate(testingC.initial, Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
         GF = Model.Validate(Observation)
-        if (GF.MSE < bestMSE) and (GF.RANGE > bestRANGE) :
+        if (GF.MSE <= bestMSE) and (GF.RANGE >= bestRANGE) :
             emlog.info("New Best Calibration")
             Calibration = copy.deepcopy(testingC)
             Calibration.Print()
             bestMSE = GF.MSE
             GF.Print()
-        else:
-            emlog.info("Int:" +str(i) + " RMSD Current: "+ str(GF.RMSD) + " Best:" + str(bestRMSD) + " Orig:" +str(orgRMSD))
+        
     return Calibration
 
 def GF_BruteForceRMSD(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
