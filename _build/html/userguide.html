@@ -1,0 +1,662 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User Guide &mdash; EasyModeler 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="EasyModeler 2.1.1 documentation" href="index.html" />
+    <link rel="prev" title="Download and Install" href="install.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Download and Install"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EasyModeler 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p><cite>EasyModler</cite> is a package for calibration and
+simulation of Ordinary Differential Equations <em>ODEs</em>.</p>
+<p><strong>Features</strong></p>
+<ul class="simple">
+<li>ODEINT Wrapper        Intelligent non-invasive wrapper to <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html">scipy.odeint</a></li>
+<li>ODE Calibration       Auto-calibrate a series of ODEs to data</li>
+<li>TimeSeries Files      Handling of dtInput</li>
+<li>Model Validation      Validate using Goodness of Fit statistics</li>
+<li>Graphical Plotting    Basic plotting via matplotlib</li>
+<li>Graphical Interface   Coming in version 2.3</li>
+</ul>
+<div class="section" id="simple-model-integration">
+<h2>1. Simple Model Integration<a class="headerlink" href="#simple-model-integration" title="Permalink to this headline">¶</a></h2>
+<p>The Lotka Volterra system is a simple model of predator-prey dynamics and consists of two coupled differentials.</p>
+<table class="docutils citation" frame="void" id="lvwikipedia" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[LVWikipedia]</td><td><a class="reference external" href="http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation">http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation</a></td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="volterra1928" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Volterra1928]</td><td>Volterra, V. (1928). Variations and fluctuations of the number of individuals in animal species living together. J. Cons. Int. Explor. Mer, 3(1), 3-51.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="lotka1922" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Lotka1922]</td><td>Lotka, A. J. (1922). Contribution to the energetics of evolution. Proceedings of the National Academy of Sciences of the United States of America, 8(6), 147.</td></tr>
+</tbody>
+</table>
+<p>This is a simple example highlighting <strong>EasyModler&#8217;s</strong> ability to integrate ODEs without complication! At a minimum to integrate we require:</p>
+<ol class="arabic simple">
+<li>An defined ODE function</li>
+<li>A set of initial conditions as a list</li>
+<li>Number of times to run the integrator</li>
+</ol>
+<ul>
+<li><p class="first">Import <cite>EasyModeler 2</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">emlib</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Declare an ODE_INT function in your source code. This will be passed to <code class="xref py py-func docutils literal"><span class="pre">scipy.integrate.odeint()</span></code>.
+The variables <strong>dtinput</strong> and <strong>constants</strong> are required, but will not be utilized in this example.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LV_int</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">initial</span><span class="p">,</span><span class="n">dtinput</span><span class="p">,</span><span class="n">constants</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Pass the ODE function to <a class="reference internal" href="index.html#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a>  as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">LV_int</span><span class="p">)</span>
+<span class="go">INFO -512- New Model(1): LV_int</span>
+<span class="go">INFO -785- No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1</span>
+<span class="go">DEBUG -799- Integrator:vode/bdf order:12 nsteps:3000 dt:1</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Now lets integrate our LV function for 20 timesteps!</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span><span class="o">.</span><span class="n">Integrate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">maxdt</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="go">DEBUG -806- ODEINT Initials:32</span>
+<span class="go">DEBUG -846- Ending in 20 runs</span>
+<span class="go">DEBUG -868- Integration dT:0 of 20 Remaining:20</span>
+<span class="go">DEBUG -880- Completed Integration, created np.array shape:(20, 2)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">The model output is stored in the <a class="reference internal" href="index.html#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a> object as arrays <em>computedT</em> and <em>computed</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">LV</span><span class="o">.</span><span class="n">computed</span>
+<span class="go">[[ 0.37758677  2.93256414]</span>
+<span class="go">[ 0.13075395  1.32273451]</span>
+<span class="go">[ 0.14707288  0.55433421]</span>
+<span class="go">[ 0.27406944  0.24884565]</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Since we would much prefer a graph instead of a table of output lets use the built-in plotting function thanks to <code class="xref py py-func docutils literal"><span class="pre">matplotlib()</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="_images/LV1.png" src="_images/LV1.png" />
+<p>The default behaviour of <a class="reference internal" href="index.html#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a> is to assume a <strong>dt</strong> of 1 if not specified.  The <strong>dt</strong> or <strong>DeltaTime</strong> of the simulation is the change of time computed.
+For the LV model we may wish to integrate additional steps to increase the accuracy of the simulation.  Lets integrate again with a <strong>dt</strong> of .01 (100 steps)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span><span class="o">.</span><span class="n">Integrate</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">maxdt</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">dt</span><span class="o">=.</span><span class="mo">01</span><span class="p">)</span>
+<span class="go">DEBUG -806- ODEINT Initials:32</span>
+<span class="go">DEBUG -846- Ending in 2000 runs</span>
+<span class="go">DEBUG -868- Integration dT:0 of 2000 Remaining:2000</span>
+<span class="go">DEBUG -868- Integration dT:500 of 2000 Remaining:1500</span>
+<span class="go">DEBUG -868- Integration dT:1000 of 2000 Remaining:1000</span>
+<span class="go">DEBUG -868- Integration dT:1500 of 2000 Remaining:500</span>
+<span class="go">DEBUG -880- Completed Integration, created np.array shape:(2000, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/LV2.png" src="_images/LV2.png" />
+</div>
+<div class="section" id="managing-model-coefficients">
+<h2>2. Managing Model Coefficients<a class="headerlink" href="#managing-model-coefficients" title="Permalink to this headline">¶</a></h2>
+<p>The Lorenz system is a series of three differentials that were described by Edward Lorenz.  <a class="reference external" href="http://en.wikipedia.org/wiki/Lorenz_system">http://en.wikipedia.org/wiki/Lorenz_system</a> This system is a great example of the power of coefficients!
+In this example we will delve into the EasyModeler <a class="reference internal" href="index.html#module-emlib" title="emlib"><code class="xref py py-mod docutils literal"><span class="pre">emlib</span></code></a> package to manage passing constants, or <em>coefficients</em> to our ODE function.</p>
+<ul>
+<li><p class="first">Declare the Lorenz ODE function and create an <a class="reference internal" href="index.html#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a> object.  However, we will now pass another list structure to our define which will become our coefficients:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">Lorenz_int</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">initial</span><span class="p">,</span><span class="n">dtinput</span><span class="p">,</span><span class="n">constants</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;Sigma&quot;</span><span class="p">)</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;Rho&quot;</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;Beta&quot;</span><span class="p">)</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">rho</span> <span class="o">-</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">z_dot</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="n">beta</span><span class="o">*</span> <span class="n">z</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">,</span> <span class="n">z_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Initialize the model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LZ</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">Lorenz_int</span><span class="p">)</span>
+<span class="go">INFO -821- New Model(2): LV_int</span>
+<span class="go">INFO -833- No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1</span>
+<span class="go">DEBUG -847- Integrator:vode/bdf order:12 nsteps:3000 dt:1</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">We now will create a <a class="reference internal" href="index.html#emlib.Calibration" title="emlib.Calibration"><code class="xref py py-class docutils literal"><span class="pre">emlib.Calibration</span></code></a> structure.  This will define our coefficients for Sigma, Rho, and Beta. For this example we want to keep Sigma and Beta constant, but allow Rho to change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LZcalibration</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Calibration</span><span class="p">()</span>
+<span class="go">INFO -244- New Calibration instance: 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LZcalibration</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;Sigma&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">isconst</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="go">DEBUG -470- C:1 Sigma 10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LZcalibration</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;Rho&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="mf">99.96</span><span class="p">,</span><span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="go">DEBUG -470- C:2 Rho 99.96</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LZcalibration</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;Beta&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">isconst</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="go">DEBUG -470- C:3 Beta 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LZcalibration</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Integrate the function for 30 timesteps with a <strong>dT</strong> of .1, then draw a graph:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LZ</span><span class="o">.</span><span class="n">Integrate</span><span class="p">(</span><span class="n">LZcalibration</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span><span class="n">Calibration</span><span class="o">=</span><span class="n">LZcalibration</span><span class="p">,</span><span class="n">maxdt</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="n">dt</span><span class="o">=.</span><span class="mo">01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LZ</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="_images/LZ1.png" src="_images/LZ1.png" />
+<ul>
+<li><p class="first">Since there are three dimensions to the LZ function we can also print a 3D graph using a supplied option to <a class="reference internal" href="index.html#emlib.Model.Draw" title="emlib.Model.Draw"><code class="xref py py-func docutils literal"><span class="pre">emlib.Model.Draw()</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LZ</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="s">&quot;3d&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="_images/LZ2.png" src="_images/LZ2.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The graphing wrapper will only pass the first three computed differentials (x,y, and z) unless a specified order is passed.  For more information check the documentation for <a class="reference internal" href="index.html#emlib.Model.Draw" title="emlib.Model.Draw"><code class="xref py py-func docutils literal"><span class="pre">emlib.Model.Draw()</span></code></a></p>
+</div>
+</div>
+<div class="section" id="model-input">
+<h2>3. Model Input<a class="headerlink" href="#model-input" title="Permalink to this headline">¶</a></h2>
+<p>In practice most models have boundary conditions and input to feed the equation set. Typically, this data is in the form of a table
+where each moment of time has a value used by the model per <strong>dT</strong>.  The EasyModeler structure of interest is <a class="reference internal" href="index.html#emlib.TimeSeries" title="emlib.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">emlib.TimeSeries</span></code></a>.</p>
+<ul>
+<li><p class="first">For this example we will add a food source term for the prey population of the Lotka Volterra model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LV_int</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">initial</span><span class="p">,</span><span class="n">dtinput</span><span class="p">,</span><span class="n">constants</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">food</span> <span class="o">=</span> <span class="n">dtinput</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;food&quot;</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">food</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The timeseries that will be passed to the model is <strong>LVinput.csv</strong>.  This file is included in the <cite>emlib</cite> download package.  The file contains
+a column of dates in <strong>mm/dd/yyyy</strong> format, and a column of random numbers from 0 - 1 with the heading <strong>food</strong>.</p>
+<p>A snipet of this file looks like:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DATE</th>
+<th class="head">food</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>01/01/1900</td>
+<td>0.330949</td>
+</tr>
+<tr class="row-odd"><td>02/01/1901</td>
+<td>0.8346444</td>
+</tr>
+<tr class="row-even"><td>03/01/1902</td>
+<td>0.1472098</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more help in defining and importing timeseries data see <a class="reference internal" href="index.html#emlib.TimeSeries" title="emlib.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">emlib.TimeSeries()</span></code></a>.  EasyModeler 2 supports files in CSV (<strong>Comma Separated Values</strong>) and SAS binary.</p>
+</div>
+<p>By importing a <a class="reference internal" href="index.html#emlib.TimeSeries" title="emlib.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">emlib.TimeSeries()</span></code></a> file EasyModeler will use the time component as our dTinput.  Each row of values will be passed to the integral per <strong>dT</strong>.
+Therfore, <strong>dT[0] = 01/01/1900, dT[1] = 02/01/1900,...</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">LV2_int</span><span class="p">)</span><span class="n">INFO</span> <span class="o">-</span><span class="mi">1026</span><span class="o">-</span> <span class="n">New</span> <span class="n">Model</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="n">LV2_int</span>
+<span class="go">INFO -1038- No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1</span>
+<span class="go">DEBUG -1052- Integrator:vode/bdf order:12 nsteps:3000 dt:1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtime</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;LVinput.csv&quot;</span><span class="p">)</span>
+<span class="go">INFO -827- New TimeSeries instance: 1</span>
+<span class="go">DEBUG -873- New INPUT table LVinput.csv[&#39;Date&#39;, &#39;food&#39;]</span>
+<span class="go">DEBUG -884- Saved 241 rows and 1 columns</span>
+<span class="go">DEBUG -886- Converted dates to contiguous np.array</span>
+<span class="go">DEBUG -888- Converted input data to contiguous np.array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Integrate</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span><span class="n">TimeSeries</span><span class="o">=</span><span class="n">LVtime</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">12.0</span><span class="p">))</span>
+<span class="go">DEBUG -1059- ODEINT Initials:32</span>
+<span class="go">DEBUG -1098- Starting:1900-01-01 Ending:241</span>
+<span class="go">DEBUG -1099- Passing DtInput:[&#39;food&#39;]</span>
+<span class="go">DEBUG -1127- Integration dT:0 of 241 Remaining:241</span>
+<span class="go">DEBUG -1139- Completed Integration, created np.array shape:(241, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Draw</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="_images/LVinput.png" src="_images/LVinput.png" />
+</div>
+<div class="section" id="validating-a-model-to-observation-data">
+<h2>4. Validating a Model to Observation Data<a class="headerlink" href="#validating-a-model-to-observation-data" title="Permalink to this headline">¶</a></h2>
+<p>In this exercise we will use <cite>EasyModeler</cite> to compute validation statistics on a model to observational data.
+The Lotka Volterra system was originally designed to describe the population data of Hares and Lynx.  This dataset is available from the emlib download package as <strong>LVdata.csv</strong>.</p>
+<p>An important distinction of observation vs timeseries dtinput is observational files can contain replicate observations of a value at the same time.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="33%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DATE</th>
+<th class="head">Hares</th>
+<th class="head">Lynx</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>01/01/1900</td>
+<td>30</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>01/01/1901</td>
+<td>47.2</td>
+<td>6.1</td>
+</tr>
+<tr class="row-even"><td>01/01/1902</td>
+<td>70.2</td>
+<td>9.8</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more help in defining and importing timeseries data see <a class="reference internal" href="index.html#emlib.Observation" title="emlib.Observation"><code class="xref py py-class docutils literal"><span class="pre">emlib.Observation()</span></code></a>.  EasyModeler 2 supports files in CSV (<strong>Comma Separated Values</strong>) and SAS binary.</p>
+</div>
+<ul>
+<li><p class="first">Import the dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVhares</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Observation</span><span class="p">(</span><span class="s">&quot;Hares&quot;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;LVdata.csv&quot;</span><span class="p">)</span>
+<span class="go">DEBUG -671- [&#39;Year&#39;, &#39;Hares&#39;, &#39;Lynx&#39;]</span>
+<span class="go">DEBUG -673- New OBS for value:Hares COLMS:1 LVdata.csv</span>
+<span class="go">INFO -690- Read file LVdata.csv 21 Observations for value Hares</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Now create a calibration class for the model.  The historical calibration for LV is a=.5,b=.02,c=.9,d=.03.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Calibration</span><span class="p">()</span>
+<span class="go">INFO -295- New Calibration instance: 1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">DEBUG -530- C:1 A 0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mo">02</span><span class="p">)</span>
+<span class="go">DEBUG -530- C:2 B 0.02</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+<span class="go">DEBUG -530- C:3 C 0.9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mo">03</span><span class="p">)</span>
+<span class="go">DEBUG -530- C:4 D 0.03</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVBEST</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="mf">30.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Lets define now the LV Model again, but with the advanced coefficient class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LV3_int</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">initial</span><span class="p">,</span><span class="n">dtinput</span><span class="p">,</span><span class="n">constants</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">Val</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">)</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>We also required a dtinput class, even though it is not used in the equations.  This is required because our model&#8217;s <strong>dT</strong> is based in time.
+a dtInput file will be used to feed information about time (our X axis in a timeseries graph) for validation and graphing purposes.  The file <strong>LVinput.csv</strong> is included in the emlib package:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVtime</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">TimeSeries</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;LVinput.csv&quot;</span><span class="p">)</span>
+<span class="go">INFO -811- New TimeSeries instance: 1</span>
+<span class="go">DEBUG -857- New INPUT table LVinput.csv[&#39;Date&#39;, &#39;food&#39;]</span>
+<span class="go">DEBUG -868- Saved 241 rows and 1 columns</span>
+<span class="go">DEBUG -870- Converted dates to contiguous np.array</span>
+<span class="go">DEBUG -872- Converted input data to contiguous np.array</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">The model can now be executed and validated on the observation data.  The texbook historical calibration was also created with a dt of 1/12, so this must be passed to the integrator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">LV2_int</span><span class="p">)</span>
+<span class="go">INFO -1010- New Model(4): LV2_int</span>
+<span class="go">INFO -1022- No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Integrate</span><span class="p">(</span><span class="n">LVBEST</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span><span class="n">Calibration</span><span class="o">=</span><span class="n">LVBEST</span><span class="p">,</span><span class="n">TimeSeries</span><span class="o">=</span><span class="n">LVtime</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">12.0</span><span class="p">))</span>
+<span class="go">DEBUG -1036- Integrator:vode/bdf order:12 nsteps:3000 dt:1</span>
+<span class="go">DEBUG -1043- ODEINT Initials:30.04.0</span>
+<span class="go">DEBUG -1082- Starting:1900-01-01 Ending:241</span>
+<span class="go">DEBUG -1083- Passing DtInput:[&#39;food&#39;]</span>
+<span class="go">DEBUG -1089- Passing Cs:[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;]</span>
+<span class="go">DEBUG -1107- Integration dT:0 of 241 Remaining:241</span>
+<span class="go">DEBUG -1119- Completed Integration, created np.array shape:(241, 2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Validate</span><span class="p">(</span><span class="n">LVob</span><span class="p">,</span><span class="n">graph</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="go">DEBUG -204- -STDEV  EXP     +STDEV  ISRANGE?</span>
+<span class="go">DEBUG -176- 30.0    31.0685310906   30.0    0</span>
+<span class="go">DEBUG -176- 47.2    46.9204691447   47.2    0</span>
+<span class="go">DEBUG -176- 70.2    66.5107699854   70.2    0</span>
+<span class="go">DEBUG -176- 77.4    69.6905765556   77.4    0</span>
+<span class="go">DEBUG -176- 36.3    32.7807761087   36.3    0</span>
+<span class="go">DEBUG -176- 20.6    12.9249681369   20.6    0</span>
+<span class="go">DEBUG -176- 18.1    8.67261176202   18.1    0</span>
+<span class="go">DEBUG -176- 21.4    8.84660667645   21.4    0</span>
+<span class="go">DEBUG -176- 22.0    11.2981426728   22.0    0</span>
+<span class="go">DEBUG -176- 25.4    16.0994275885   25.4    0</span>
+<span class="go">DEBUG -176- 27.1    24.1072535354   27.1    0</span>
+<span class="go">DEBUG -176- 40.3    36.6435721097   40.3    0</span>
+<span class="go">DEBUG -176- 57.0    54.5833013399   57.0    0</span>
+<span class="go">DEBUG -176- 76.6    72.175117603    76.6    0</span>
+<span class="go">DEBUG -176- 52.3    57.3303708738   52.3    0</span>
+<span class="go">DEBUG -176- 19.5    21.6690665469   19.5    0</span>
+<span class="go">DEBUG -176- 11.2    10.3545405097   11.2    0</span>
+<span class="go">DEBUG -176- 7.6     8.41953059301   7.6     0</span>
+<span class="go">DEBUG -176- 14.6    9.56198487973   14.6    0</span>
+<span class="go">DEBUG -176- 16.2    12.8777682017   16.2    0</span>
+<span class="go">DEBUG -176- 24.7    18.809882218    24.7    0</span>
+<span class="go">DEBUG -228- GFMODEL #21 MSE:27.3 RANGE%0 MSER:27.3 WMSE:27.3</span>
+<span class="go">INFO -1299- New fitness object:1</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<img alt="_images/LV3.png" src="_images/LV3.png" />
+<p>The historical coefficients match the observed data at a Mean Square Error of 27.3.</p>
+</div>
+<div class="section" id="calibrating-a-model-to-observation-data">
+<h2>5. Calibrating a Model to Observation Data<a class="headerlink" href="#calibrating-a-model-to-observation-data" title="Permalink to this headline">¶</a></h2>
+<p>In this example we will use <cite>EasyModeler</cite> to compute the coefficents for the Lokta Volterra model.
+The ideal method to solve the LV system is analytically for the critical points.  However, for large scale models this is impractical, or impossible.
+Thus, we will numerically solve our coefficients to the dataset used in the previous example.</p>
+<ul>
+<li><p class="first">For this example lets turn off the advanced debugging logger:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logger</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">emlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emlib</span><span class="o">.</span><span class="n">emlog</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Define the integral and import the observation file and timeseries file:</p>
+<div class="highlight-python"><div class="highlight"><pre>def LV3_int(t,initial,dtinput,constants):
+        x = initial[0]
+        y = initial[1]
+        A = constants.Val(&quot;A&quot;)
+        B = constants.Val(&quot;B&quot;)
+        C = constants.Val(&quot;C&quot;)
+        D = constants.Val(&quot;D&quot;)
+
+        x_dot = (A * x) - (B * x *y)
+        y_dot = (D * x * y) - (C * y)
+
+        return [x_dot, y_dot]
+
+
+
+&gt;&gt;&gt; hares = emlib.Observation(&quot;Hares&quot;,filename=&quot;LVdata.csv&quot;)
+INFO -706- Read file LVdata.csv 21 Observations for value Hares
+&gt;&gt;&gt; LVtime = emlib.TimeSeries(filename=&quot;LVinput.csv&quot;)
+INFO -827- New TimeSeries instance: 1
+&gt;&gt;&gt; LVmodel = emlib.Model(LV3_int)
+INFO -1026- New Model(1): LV3_int
+INFO -1038- No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1
+&gt;&gt;&gt; LVmodel = emlib.Model(LV3_int)
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the coefficient object.  For this example we need to create a minimum and maximum value for the valid region to test.  We also require a starting point, or <em>your best guess</em>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Calibration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span><span class="nb">min</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span><span class="nb">max</span><span class="o">=.</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mo">04</span><span class="p">,</span><span class="nb">min</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span><span class="nb">max</span><span class="o">=.</span><span class="mo">07</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mi">6</span><span class="p">,</span><span class="nb">min</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="nb">max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="n">val</span><span class="o">=.</span><span class="mo">04</span><span class="p">,</span><span class="nb">min</span><span class="o">=.</span><span class="mo">01</span><span class="p">,</span><span class="nb">max</span><span class="o">=.</span><span class="mo">05</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVtest</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="mf">30.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>This calibration test set is a very close approximation of the historical calibration set.  Running the integrator with this calibration we obtain a very weak fit to the data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Integrate</span><span class="p">(</span><span class="n">LVtest</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span><span class="n">Calibration</span><span class="o">=</span><span class="n">LVtest</span><span class="p">,</span><span class="n">TimeSeries</span><span class="o">=</span><span class="n">LVtime</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">12.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Validate</span><span class="p">(</span><span class="n">hares</span><span class="p">,</span><span class="n">graph</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="go">GFMODEL #21 MSE:130.5 RANGE%0 MSER:130.5 WMSE:130.5</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Why are we using a <strong>dT</strong> of (1/12)?  This model was calibrated to this dT instead of dT = 1.</p>
+</div>
+<img alt="_images/LVcal1.png" src="_images/LVcal1.png" />
+<p>The tested coefficients validate poorly to the dataset at a Mean Square Error of 130.5.</p>
+<p><cite>EasyModeler</cite> provides an interface to program and test multiple fitness algorithms on a model.  The default method is <a class="reference internal" href="index.html#emlib.GF_BruteForceMSE" title="emlib.GF_BruteForceMSE"><code class="xref py py-func docutils literal"><span class="pre">emlib.GF_BruteForceMSE()</span></code></a>.
+This method randomizes the coefficients from the supplied <strong>min</strong> to <strong>max</strong> and validates.  However, user supplied methods may also be passed to
+<a class="reference internal" href="index.html#emlib.Model.Calibrate" title="emlib.Model.Calibrate"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model.Calibrate()</span></code></a>. The option <strong>runs=</strong> determines the maximum times to run the algorithm.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">LVmodel</span><span class="o">.</span><span class="n">Calibrate</span><span class="p">(</span><span class="n">LVtest</span><span class="p">,</span><span class="n">hares</span><span class="p">,</span><span class="n">runs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">TimeSeries</span><span class="o">=</span><span class="n">LVtime</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">12.0</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Integrate</span><span class="p">(</span><span class="n">LVtest</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span><span class="n">Calibration</span><span class="o">=</span><span class="n">best</span><span class="p">,</span><span class="n">TimeSeries</span><span class="o">=</span><span class="n">LVtime</span><span class="p">,</span><span class="n">dt</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">12.0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">Validate</span><span class="p">(</span><span class="n">hares</span><span class="p">,</span><span class="n">graph</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LVmodel</span><span class="o">.</span><span class="n">fit</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="go">GFMODEL #21 MSE:29.6 RANGE%0 MSER:29.6 WMSE:29.6</span>
+</pre></div>
+</div>
+<p>Since each iteration of the function randomizes the coefficients actual numbers will vary.
+500 runs on a typical 2013 PC will take ~ 2 minutes and produce a fitness around 30 MSE.
+However, to start calibration from a <strong>min</strong> 0 to <strong>max</strong> of 1 may take several hours of runs.</p>
+<img alt="_images/LVcal2.png" src="_images/LVcal2.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For a bonus exercise try to calibrate the Lotka model to both the Lynx and Hare populations.</p>
+</div>
+</div>
+<div class="section" id="handling-sas-binary-files">
+<h2>6. Handling SAS Binary Files<a class="headerlink" href="#handling-sas-binary-files" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.sas.com/en_us/home.html">SAS</a> is a statistical software system that is often used to analyze and store biological and ecological data.
+As such, it is helpful to be able to interoperate between SAS binary files and Python.  <cite>EasyModeler 2</cite> uses <a class="reference external" href="https://pypi.python.org/pypi/sas7bdat">sas7bdat.py</a>
+to convert SAS binary files.</p>
+<ul>
+<li><p class="first">To import a SAS file use the switch <strong>fformat=&#8221;sas&#8221;</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sasob</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Observation</span><span class="p">(</span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;testsas.sas7bdat&quot;</span><span class="p">,</span><span class="n">fformat</span><span class="o">=</span><span class="s">&quot;sas&quot;</span><span class="p">)</span>
+<span class="go">DEBUG -609- New OBS for value:salinity COLMS:15 testsas.sas7bdat</span>
+<span class="go">INFO -645- Read file testsas.sas7bdat 44 Observations for value salinity</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">See the autodoc pages for <a class="reference internal" href="index.html#emlib.Observation" title="emlib.Observation"><code class="xref py py-class docutils literal"><span class="pre">emlib.Observation</span></code></a> and <a class="reference internal" href="index.html#emlib.TimeSeries" title="emlib.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">emlib.TimeSeries</span></code></a> for help with importing files.</p>
+</div>
+</div>
+<div class="section" id="logging-and-debugging">
+<h2>7. Logging and Debugging<a class="headerlink" href="#logging-and-debugging" title="Permalink to this headline">¶</a></h2>
+<p><cite>EasyModeler 2</cite> supports the Python <a class="reference external" href="https://docs.python.org/2/library/logging.html">logging</a> library.
+Logging messages are divided into hierarchical groups:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>ERROR</dt>
+<dd><ul class="first last simple">
+<li>Hard error that should stop execution</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>WARN</dt>
+<dd><ul class="first last simple">
+<li>Warning that results may not be as intended, includes error messages.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>INFO</dt>
+<dd><ul class="first last simple">
+<li>General information, includes warnings and errors.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>DEBUG</dt>
+<dd><ul class="first last simple">
+<li>Verbose output that includes memory dumps for debugging purposes</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<ul>
+<li><dl class="first docutils">
+<dt>To set the level of log messages::</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">emlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">emlib</span><span class="o">.</span><span class="n">emlog</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User Guide</a><ul>
+<li><a class="reference internal" href="#simple-model-integration">1. Simple Model Integration</a></li>
+<li><a class="reference internal" href="#managing-model-coefficients">2. Managing Model Coefficients</a></li>
+<li><a class="reference internal" href="#model-input">3. Model Input</a></li>
+<li><a class="reference internal" href="#validating-a-model-to-observation-data">4. Validating a Model to Observation Data</a></li>
+<li><a class="reference internal" href="#calibrating-a-model-to-observation-data">5. Calibrating a Model to Observation Data</a></li>
+<li><a class="reference internal" href="#handling-sas-binary-files">6. Handling SAS Binary Files</a></li>
+<li><a class="reference internal" href="#logging-and-debugging">7. Logging and Debugging</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Download and Install</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/userguide.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Evan L Turner.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3b3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.1</a>
+      
+      |
+      <a href="_sources/userguide.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

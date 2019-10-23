@@ -1,0 +1,1509 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>emlib &mdash; EasyModeler 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="EasyModeler 2.1.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EasyModeler 2.1.1 documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for emlib</h1><div class="highlight"><pre>
+# -*- coding: cp1252 -*-
+
+import sys
+import os
+import copy
+import csv
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import math
+from scipy.integrate import odeint
+import scipy
+import logging
+import datetime
+from matplotlib.dates import MONDAY, SATURDAY
+from matplotlib.dates import MonthLocator , WeekdayLocator ,DateFormatter, YearLocator, num2date, date2num
+from sas7bdat import SAS7BDAT
+
+FORMAT = &#39;%(levelname)s -%(lineno)s- %(message)s&#39;
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+emlog = logging.getLogger(&#39;EASYMODEL&#39;)
+
+
+
+
+<div class="viewcode-block" id="NuN"><a class="viewcode-back" href="../index.html#emlib.NuN">[docs]</a>def NuN(value, Type=None):
+    &#39;&#39;&#39;
+    Tries to convert a string into a float, numpy.nan, or specified type.  Returns the conversion or the original string if failed.
+
+    :param value: The string to convert.
+    :param Type:  Optinal type to convert value to.
+    :type value: str
+    :type Type: float,int,str,...
+    :returns: value
+    :rtype: float,numpy.nan,str,...
+    
+    
+    **Advantages**:
+     - This function is useful in sanitizing text input files.
+
+    **Drawbacks**:
+     - Does not alert calling function if conversion failed.
+    
+    :Example:
+    
+    If value(str) is &quot;NaN&quot;  or &quot;None&quot;, **NuN** will return *numpy.nan*
+    
+     &gt;&gt;&gt; toTest = &quot;NaN&quot;
+     &gt;&gt;&gt; sanitized = NuN(toTest)
+     &gt;&gt;&gt; numpy.isnan(sanitized)
+     True
+
+    **NuN** will try to convert value (str) into a float.  If this is unsuccessful **NuN** will return the string.
+     
+     &gt;&gt;&gt; a = &quot;3.4&quot;
+     &gt;&gt;&gt; b = &quot;three point four&quot;
+     &gt;&gt;&gt; a = NuN(a)
+     &gt;&gt;&gt; b = NuN(b)
+     &gt;&gt;&gt; type(a)
+     &lt;type &#39;float&#39;&gt;
+     &gt;&gt;&gt; type(b)
+     &lt;type &#39;str&#39;&gt;
+
+
+    Empty strings will be returned as *numpy.nan*.  This is useful for importing data tables with missing values for cells.
+
+     &gt;&gt;&gt; empty = &#39;&#39;
+     &gt;&gt;&gt; sanitized = NuN(empty)
+     &gt;&gt;&gt; print sanitized
+     nan
+     &gt;&gt;&gt; numpy.isnan(sanitized)
+     True
+
+    Occasionally we may want to import a series of text values as int instead of float.
+
+     &gt;&gt;&gt; string = &quot;5&quot;
+     &gt;&gt;&gt; integer = NuN(string, Type=int)
+     &gt;&gt;&gt; type(integer)
+     &lt;type &#39;int&#39;&gt;
+     
+    &#39;&#39;&#39;
+    if not value:
+        return np.nan
+    if (value.lower() == &#39;nan&#39;) or (value.lower() == &#39;&#39;) or (value.lower() == &#39;none&#39;):
+        return np.nan
+    else:
+        if Type:
+            try:
+                Type(value)
+                return Type(value)
+            except:
+                return value
+        else:
+            try:
+                float(value)
+                return float(value)
+            except ValueError:
+                return value
+
+
+</div>
+<div class="viewcode-block" id="mmddyyyy2date"><a class="viewcode-back" href="../index.html#emlib.mmddyyyy2date">[docs]</a>def mmddyyyy2date(datestr):
+    &#39;&#39;&#39;
+    Converts mm/dd/yyyy str into a :class:`datetime.date` object
+    
+    :param datestr: The mm/dd/yyyy string to convert.
+    :type datestr: str
+    :returns: date
+    :rtype: datetime.date
+    
+    Method converts a date string in the form mm/dd/yyyy into a :class:`datetime.date` object.
+    Text deliminators are expected in the input string.
+    
+    :Example:
+    
+    Converting a datestring to :class:`datetime.date` object:
+    
+     &gt;&gt;&gt; toTest = &quot;05/20/2013&quot;
+     &gt;&gt;&gt; date = mmddyy2date(toTest)
+     &gt;&gt;&gt; print date
+     2013-05-20
+     &gt;&gt;&gt; type(date)
+     &lt;type &#39;datetime.date&#39;&gt;
+     
+    &#39;&#39;&#39;
+    date = datetime.date(int(datestr[6:]),int(datestr[:2]),int(datestr[3:5]))
+
+    return date
+
+</div>
+<div class="viewcode-block" id="GFSingle"><a class="viewcode-back" href="../index.html#emlib.GFSingle">[docs]</a>def GFSingle(mean,stdev,model):
+    &#39;&#39;&#39;
+    Test fitness of single model dT
+
+    
+    :param mean: Observation Mean
+    :type mean: float
+    :param stdev: Observation STDEV
+    :type stdev: float
+    :param model: Simulated value **expected**
+    :type model: float
+    
+    :returns: MSE,WMSE,RANGE,MSER
+    :rtype: float,float,float,float
+  
+
+    This is a pattern match program which tests goodness of fit
+    for asingle point for models against Observation results.
+    
+    .. note::  This function typically only called by :func:`emlib.GFModel` 
+    
+
+    &#39;&#39;&#39;
+    obs = mean
+    obsE = stdev
+    diff = (abs(obs) - abs(model))
+    diff2 = diff * diff
+
+    #set the stdev to 1 if less for this test
+    if obsE &lt; 1:
+        WobsE = 1
+    else:
+        WobsE = obsE
+
+    WMSE = diff2 / (math.pow(WobsE,2))
+    MSE = math.pow(((obs - model)),2)
+    SS = math.pow(((obsE - obs)),2)
+    adjr2 = MSE/SS
+    if (model &lt; (obs + obsE)) and (model &gt; (obs - obsE)):
+        RANGE = 1
+        MSER = 0
+    else:
+        RANGE = 0
+        if (model &lt; (obs - obsE)):
+            MSER = math.pow(((obs - obsE) - model),2)
+        else:
+            MSER = math.pow(((obs + obsE) - model),2)
+
+    #emlog.debug(str((obs - obsE)) + &quot;\t&quot;+str(model)+&quot;\t&quot;+str((obs + obsE))+&quot;\t&quot;+str(RANGE))
+
+    return MSE,WMSE,RANGE,MSER,SS, adjr2
+               </div>
+<div class="viewcode-block" id="GFModel"><a class="viewcode-back" href="../index.html#emlib.GFModel">[docs]</a>def GFModel(model, Observation):
+    &quot;&quot;&quot;Fits Model results to Observation
+
+    :param model: Model to test
+    :param Observation:  Historical Observation
+    :type model: emlib.Model
+    :type Observation: emlib.Observation
+    :returns: Fitness object
+    :rtype: emlib.Fitness
+
+    &quot;&quot;&quot;
+    obsT = Observation.T 
+    obsXM = Observation.XM
+    obsXE = Observation.XE
+    obsX = 0
+    obsC = 0
+    for i in Observation.X:
+        for k in i:
+            obsC += 1
+            obsX += (k * k)
+
+ 
+
+        
+         
+    WMSE = 0
+    MSE = 0
+    matches = 0
+    indexobs = 0
+    RANGE = 0
+    MSER = 0
+    O = []
+    E = []
+    O_mean = 1  #observed overall mean
+    E_mean = 1  #expected overall mean
+    SS_tot = 0  #total sum of squares (expected)
+    SS_res = 0  #sum of squares of residuals
+    R2 = 1      #R squared
+    adjr2 = 0
+
+    emlog.debug(&quot;-STDEV\tEXP\t+STDEV\tISRANGE?&quot;)
+    for i in obsT:
+        indexsim = 0
+    
+        for k in model.computedT:
+            
+            indexsim+=1 #we are one index ahead
+            #obs happend at the same exact deltaT of model response
+            if k == i :
+                matches+=1
+                O.append(obsXM[indexobs])
+                E.append(model.computed[indexsim-1])
+                a,b,c,d, e, f= GFSingle(obsXM[indexobs],obsXE[indexobs],model.computed[indexsim-1][0])
+                MSE+=a
+                WMSE+=b
+                RANGE+=c
+                MSER+=d
+                SS_tot +=e
+                adjr2 +=f
+                break
+        indexobs +=1
+    WMSE = round(math.sqrt(WMSE),1)
+    
+    if RANGE &gt; 0:  #avoid divide by zero
+        RANGE = round((100 * float(RANGE)/matches),1)
+
+
+
+    MSER = round(math.sqrt(MSER),1)
+    
+    Xtot = obsX/obsC
+    Xtot= math.sqrt(Xtot)
+    MSE = math.sqrt(MSE/matches)
+    RMSD = 1 - (MSE/Xtot)
+    if RMSD &lt; 0:
+        RMSD = 0.0
+    RMSD = round((RMSD * 100),1)
+    MSE = round(MSE,3)
+    Xtot = round(Xtot,3)
+    Xtot= round(math.sqrt(Xtot),3)
+    emlog.debug(&quot;GFMODEL #&quot;+str(matches) +&quot; Xtot&quot;+str(Xtot)+&quot; RMSD%:&quot;+str(RMSD)+&quot; RMSE:&quot;+str(MSE)+&quot; RANGE%&quot;+str(RANGE)+&quot; WMSE:&quot;+str(WMSE))
+    return Fitness([matches,MSE,WMSE,RANGE,MSER,O,E,RMSD,Xtot])
+</div>
+<div class="viewcode-block" id="EMDraw"><a class="viewcode-back" href="../index.html#emlib.EMDraw">[docs]</a>def EMDraw(GraphOpt,x,y,z=None):
+    &quot;&quot;&quot;
+    The :func:`matplotlib.plt` wrapper
+
+    &quot;&quot;&quot;
+
+    fig = plt.figure
+    plt.legend = GraphOpt.labels
+    plt.set_xlabel = GraphOpt.xlabel
+    plt.set_ylabel = GraphOpt.ylabel
+    if GraphOpt.graph == &quot;ts&quot;:
+        plt.plot(x,y)
+    if GraphOpt.graph == &#39;fp&#39;:
+        plt.plot(x,y)     
+    if GraphOpt.graph == &#39;3d&#39;:
+        ax = Axes3D(fig)
+        ax.plot(x,y,z)
+        
+    plt.show(block=opts.block)
+
+</div>
+<div class="viewcode-block" id="dtInput"><a class="viewcode-back" href="../index.html#emlib.dtInput">[docs]</a>class dtInput:
+    &quot;&quot;&quot;
+    Internal structure for handling dTinput
+    &quot;&quot;&quot;
+    def __init__(self,labels,values):
+        self.values = values
+        self.labels = labels
+        
+<div class="viewcode-block" id="dtInput.Val"><a class="viewcode-back" href="../index.html#emlib.dtInput.Val">[docs]</a>    def Val(self,label):
+        index = 0
+        for i in self.labels:
+            if i == label:
+                return self.values[index]
+            
+            index += 1
+        emlog.error(&#39;dtInput &#39;+label + &#39; not found in list&#39;)  
+    </div></div>
+<div class="viewcode-block" id="GraphOpt"><a class="viewcode-back" href="../index.html#emlib.GraphOpt">[docs]</a>class GraphOpt:
+    &quot;&quot;&quot;
+    Advanced graphing options to pass to :func:`matplotlib.plt`
+    
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self):
+        self.__class__._count +=1
+        self.title = None
+        self.labels = []
+        self.DPI = None
+        self.mondays = WeekdayLocator(MONDAY)
+        self.months = MonthLocator()
+        self.years = YearLocator()
+        self.monthsFmt = DateFormatter(&#39;%d %b %y&#39;)
+        self.linecolors = []
+        self.linewidths = []
+        self.xlim = None
+        self.ylim = None
+        self.xlabel = None
+        self.ylabel = None
+        self.filename = None
+        self.graph = None
+        self.block = False
+        </div>
+<div class="viewcode-block" id="Calibration"><a class="viewcode-back" href="../index.html#emlib.Calibration">[docs]</a>class Calibration:
+    &quot;&quot;&quot;
+    A collection of :class:`emlib.Coefficient` for a model.
+    
+    :param coeffs=: list of :class:`emlib.Coefficient`
+    :param directory=:  directory
+    :param filename=: filename
+    :type coeffs=: list,emlib.Coefficient
+    :type directory=: str
+    :type filename=: str
+    
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self, coeffs=None, directory=None ,filename=None):
+        self.__class__._count +=1
+        
+        self.initial = []
+        self.ID = self.__class__._count
+        emlog.info(&#39;New Calibration instance: &#39;+str(self.ID))
+        self.dir = directory
+        self.filename = filename
+        self.C = []
+        if not directory:
+            self.dir = &quot;&quot;
+        if filename:
+            self.Read(filename)
+        if coeffs:
+            self.C = coeffs[:]
+            
+<div class="viewcode-block" id="Calibration.Read"><a class="viewcode-back" href="../index.html#emlib.Calibration.Read">[docs]</a>    def Read(self, filename,directory=None):
+        &quot;&quot;&quot;
+        Read Coefficients from CSV file
+        
+        :param directory=:  directory
+        :param filename: filename
+        :type directory=: str
+        :type filename: str
+    
+        :Example:
+        
+        We have a CSV file called bcfile.csv in the working directory. 
+        
+        
+        +----------+---------+--------+--------+---------+------------+
+        |Label     | Value   | min    | Max    | ISConst | Desc       |
+        +==========+=========+========+========+=========+============+
+        |kbg       |    1    | 0.5    | 1      | 0       |  growth    |
+        +----------+---------+--------+--------+---------+------------+    
+        |kbm       | 0.001   | 0.0001 | .2     | 0       |   mortality| 
+        +----------+---------+--------+--------+---------+------------+
+        |kdd       |  1      |    0.05| 3      | 0       | depth mort |
+        +----------+---------+--------+--------+---------+------------+   
+        |Bcc       |   20    |        |        | 1       |carrying cap|
+        +----------+---------+--------+--------+---------+------------+    
+        |Ktg       | 0.9     | 0.5    | 15     | 0       |            | 
+        +----------+---------+--------+--------+---------+------------+
+        |Sopt      |  15     |        |        | 1       |opt salinity|
+        +----------+---------+--------+--------+---------+------------+  
+        |Ksg       |    8    | 6      | 15     | 0       |            |
+        +----------+---------+--------+--------+---------+------------+    
+        |Ksd       | 2.2     | 0.9    | 7      | 0       |            | 
+        +----------+---------+--------+--------+---------+------------+
+       
+        
+            &gt;&gt;&gt; benthosCal = emlib.Calibration()
+            &gt;&gt;&gt; benthosCal.Read(bcfile.csv)
+            INFO -243- New Calibration instance: 1
+            DEBUG -351- C:1 Kbg 1.0
+            DEBUG -351- C:2 Kbm 0.001
+            DEBUG -351- C:3 Kdd 1.0
+            DEBUG -351- C:4 Bcc 20.0
+            DEBUG -351- C:5 Ktg 0.9
+            DEBUG -351- C:6 Sopt 15.0
+            DEBUG -351- C:7 Ksg 8.0
+            DEBUG -351- C:8 Ksd 2.2
+            INFO -272- imported C file
+            
+            
+        &quot;&quot;&quot;
+        self.C = []
+        if directory:
+            self.dir = directory
+        if filename:
+            self.filename = filename
+                
+        myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),&#39;rb&#39;), delimiter=&#39;,&#39;)
+        firstline = next(myspamReader)
+
+        for row in myspamReader:
+                
+            self.C.append(Coefficient(row[0],val=NuN(row[1]),min=NuN(row[2]),max=NuN(row[3]),isconst=row[4],desc=row[5]))
+        emlog.info(&#39;imported C file&#39;)</div>
+<div class="viewcode-block" id="Calibration.Add"><a class="viewcode-back" href="../index.html#emlib.Calibration.Add">[docs]</a>    def Add(self,label,val=None,min=None,max=None,isconst=None,desc=None):
+        &quot;&quot;&quot;
+        Add a single coefficient to the calibration set
+        &quot;&quot;&quot;
+        self.C.append(Coefficient(label,val,min,max,isconst,desc))</div>
+<div class="viewcode-block" id="Calibration.Val"><a class="viewcode-back" href="../index.html#emlib.Calibration.Val">[docs]</a>    def Val(self,label):
+        &quot;&quot;&quot;
+        Returns value of coefficient by label
+        &quot;&quot;&quot;
+        for i in self.C:
+            if i.label == label:
+                return i.var
+
+        
+        emlog.error(&#39;Coefficient &#39;+label + &#39; not found in list&#39;)</div>
+<div class="viewcode-block" id="Calibration.UpdateC"><a class="viewcode-back" href="../index.html#emlib.Calibration.UpdateC">[docs]</a>    def UpdateC(self,tag,val=None,min=None,max=None,isconst=None,desc=None):
+        &quot;&quot;&quot;
+        Update an existing Coefficient in the calibration set
+        &quot;&quot;&quot;
+        for i in self.C:
+            if i.label == tag:
+                if val:
+                    i.var = val
+                if min:
+                    i.min = min
+                if desc:
+                    i.desc = desc
+                if max:
+                    i.max = max
+                if (isconst == &quot;FALSE&quot;) or (isconst == 0):
+                    i.isconst = False
+                else:
+                    i.isconst = True
+                break
+                
+        
+            </div>
+<div class="viewcode-block" id="Calibration.SetCoeffs"><a class="viewcode-back" href="../index.html#emlib.Calibration.SetCoeffs">[docs]</a>    def SetCoeffs(self,Coeffs):
+        &quot;&quot;&quot;
+        Copy coefficients from array
+        &quot;&quot;&quot;
+        self.C = coeffs[:]
+</div>
+<div class="viewcode-block" id="Calibration.Write"><a class="viewcode-back" href="../index.html#emlib.Calibration.Write">[docs]</a>    def Write(self,directory=None,filename=None):
+        &quot;&quot;&quot;
+        Write coefficients to CSV file.  Will overwrite contents if file exists.
+        &quot;&quot;&quot;
+        if directory:
+            self.dir = directory
+        if filename:
+            self.filename = filename
+    
+        f = open(self.dir+self.filename, &#39;wb&#39;)
+        spamWriter = csv.writer(f, delimiter=&#39;,&#39;,quotechar=&#39;|&#39;, quoting=csv.QUOTE_MINIMAL)
+        index = 0
+        series = [&quot;Label&quot;,&quot;Value&quot;,&quot;Min&quot;,&quot;Max&quot;,&quot;ISConst&quot;,&quot;Desc&quot;]
+        spamWriter.writerow(series)
+    
+        for i in self.C:
+            spamWriter.writerow(i.Get())
+
+        f.close()
+        emlog.info(&#39;Saved C file&#39;)</div>
+<div class="viewcode-block" id="Calibration.Print"><a class="viewcode-back" href="../index.html#emlib.Calibration.Print">[docs]</a>    def Print(self):
+        &quot;&quot;&quot;
+        Prints :class:`emlib.Calibration` structure to STDOUT
+       
+            &gt;&gt;&gt; benthosCal.Print()
+            Label	Value	Min	Max	ISConst	Desc
+            Kbg 	1.0 	0.5 	1.0 	False   growth
+            Kbm 	0.001 	0.0001 	0.2 	False   mortality 	
+            Kdd 	1.0 	0.05 	3.0 	False 	depth mort
+            Bcc 	20.0 	nan 	nan 	True 	carrying cap
+            Ktg 	0.9 	0.5 	15.0 	False 	
+            Sopt 	15.0 	nan 	nan 	True 	opt salinity
+            Ksg 	8.0 	6.0 	15.0 	False 	
+            Ksd 	2.2 	0.9 	7.0 	False 	
+
+        &quot;&quot;&quot;
+        print &quot;Label\tValue\tMin\tMax\tISConst\tDesc&quot;
+        for i in self.C:
+            i.Print()
+        
+</div>
+<div class="viewcode-block" id="Calibration.GetC"><a class="viewcode-back" href="../index.html#emlib.Calibration.GetC">[docs]</a>    def GetC(self,tag):
+        &quot;&quot;&quot;
+        Return a single :class:`emlib.Coefficient` structure by label
+        
+        :param tag: Coefficient label
+        :type tag: str
+        
+        :returns: Coefficient
+        :rtype: emlib.Coefficient
+        &quot;&quot;&quot;
+        for i in self.C:
+            if i.label == tag:
+                return i</div>
+<div class="viewcode-block" id="Calibration.Randomize"><a class="viewcode-back" href="../index.html#emlib.Calibration.Randomize">[docs]</a>    def Randomize(self):
+        &quot;&quot;&quot;
+        Randomizes all coefficients that have **emlib.Coefficient.isconst** set to *False*
+        
+        .. seealso:: :class:`emlib.Coefficient.Randomize`
+        &quot;&quot;&quot;
+        for i in self.C:
+            i.Randomize()
+        self.GF = []</div>
+<div class="viewcode-block" id="Calibration.Get"><a class="viewcode-back" href="../index.html#emlib.Calibration.Get">[docs]</a>    def Get(self):
+        &quot;&quot;&quot;
+        Return a list of all :class:`emlib.Coefficient` objects.
+        
+        :returns: list of :class:`emlib.Coefficient`
+        :rtype: list
+        
+        
+        &quot;&quot;&quot;
+        tmp = []
+        for i in self.C:
+            tmp.append(i.var)
+        return tmp</div>
+<div class="viewcode-block" id="Calibration.GetLabels"><a class="viewcode-back" href="../index.html#emlib.Calibration.GetLabels">[docs]</a>    def GetLabels(self):
+        &quot;&quot;&quot;
+        Return list of all :class:`emlib.Coefficient` labels
+        
+        :returns: : list of labels 
+        :rtype: list
+        &quot;&quot;&quot;
+        tmp = []
+        for i in self.C:
+            tmp.append(i.label)
+        return tmp
+            </div></div>
+<div class="viewcode-block" id="Coefficient"><a class="viewcode-back" href="../index.html#emlib.Coefficient">[docs]</a>class Coefficient:
+    &quot;&quot;&quot;
+    A single parameter coefficient.  
+    
+    :param label:     short description
+    :param val=:     coefficient value
+    :param min=:     minimum value
+    :param max=:     maximum value
+    :param isconst=:     is mutable coefficient?
+    :param desc=:     Long description
+    :type label:      str
+    :type val=:      float
+    :type min=:      float
+    :type max=:      float
+    :type isconst=:      bool
+    :type desc=:      str
+    
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self,label,val=None,min=None,max=None,isconst=None,desc=None):
+        self.__class__._count +=1
+        self.label = label
+        self.desc = desc
+        self.var = val
+        self.min = min
+        self.max = max
+        if (isconst):
+            if (isconst == &quot;False&quot; ) or (isconst == False):
+                self.isconst = False
+            else:
+                self.isconst = bool(isconst)
+        else:
+            self.isconst = bool(False)
+            
+
+        self.input = 0
+        self.index = 0
+        self.ID = self.__class__._count
+        emlog.debug(&quot;C:&quot;+str(self.ID)+&quot; &quot; +self.label+&quot; &quot;+str(self.var)+ &quot; &quot;+ str(self.isconst))
+<div class="viewcode-block" id="Coefficient.Randomize"><a class="viewcode-back" href="../index.html#emlib.Coefficient.Randomize">[docs]</a>    def Randomize(self):
+        &quot;&quot;&quot;
+        Randomizes coefficient between :class:`emlib.Coefficient.min` and :class:`emlib.Coefficient.max` 
+        using :func:`numpy.random.uniform`
+        
+        If **Coefficient.isconst** is *True* function returns without randomizing.
+        
+        .. note::  Why do we need a :mod:`boolean` value :class:`emlib.Coefficient.isconst`?  Even though :class:`emlib.Coefficient.min` and :class:`emlib.Coefficient.max`  could exist we may want to set this Coefficient to constant dynamically during a calibration algorithm.
+        &quot;&quot;&quot;
+        if self.isconst:
+            return
+        if (self.min and self.max) and (self.min &lt;= self.max):
+            self.var = np.random.uniform(self.min,self.max)</div>
+<div class="viewcode-block" id="Coefficient.SetRange"><a class="viewcode-back" href="../index.html#emlib.Coefficient.SetRange">[docs]</a>    def SetRange(self,min,max):
+        &quot;&quot;&quot;
+        Reset our min and max allowable values for Coefficient.  This is useful for Monte Carlo algorithms that will tune each coefficient during the calibration process.
+        
+        :param min=:     minimum value
+        :param max=:     maximum value
+        :type min=:      float
+        :type max=:      float
+        
+        &quot;&quot;&quot;
+        self.min=min
+        self.max=max</div>
+<div class="viewcode-block" id="Coefficient.Print"><a class="viewcode-back" href="../index.html#emlib.Coefficient.Print">[docs]</a>    def Print(self):
+        &quot;&quot;&quot;
+        Prints Coefficient structure to STDOUT.
+        &quot;&quot;&quot;
+        print self.label,&#39;\t&#39;,self.var,&#39;\t&#39;,self.min,&#39;\t&#39;,self.max,&#39;\t&#39;,self.isconst,&#39;\t&#39;,self.desc</div>
+<div class="viewcode-block" id="Coefficient.Get"><a class="viewcode-back" href="../index.html#emlib.Coefficient.Get">[docs]</a>    def Get(self):
+        &quot;&quot;&quot;
+        Returns entire Coefficient structure as an array list.
+        
+        
+        :returns: label,var,min,max,isconst,desc
+        :rtype: list
+        &quot;&quot;&quot;
+        return [self.label,self.var,self.min,self.max,self.isconst,self.desc]
+    
+            
+  </div></div>
+<div class="viewcode-block" id="Observation"><a class="viewcode-back" href="../index.html#emlib.Observation">[docs]</a>class Observation:
+    &quot;&quot;&quot;
+    A series of observations and replicates to validate a model.
+
+    :param value:
+    :param dirname: optinal directory
+    :param filename: filename
+    :param fformat: optional file format
+    :type value: str
+    :type dirname: str
+    :type filename: str
+    :type filename: &quot;csv&quot;, &quot;sas&quot;
+
+    
+    :returns: Observation Object
+    :rtype: emlib.Observation
+    
+    This class object is the generic table structure EasyModeler uses
+    to handle validation data via tables.  This class of data differes from
+    :class:`emlib.TimeSeries` in that replicates of measurements are made at the same time.
+    This data is used to :func:`emlib.Model.Validate()` a model to observations.   
+
+    
+    EasyModeler 2  supports comma separated value files *CSV* and *SAS* 7 binary.
+
+    :SAS Example:
+
+    - Data is stored in a SAS 7 binary file **testsas.sas7bdat** in the working directory. The salinity observations
+    of this file will be used to validate a model response.
+
+    &gt;&gt;&gt; sasob = emlib.Observation(&quot;salinity&quot;,filename=&quot;testsas.sas7bdat&quot;,fformat=&quot;sas&quot;)
+    DEBUG -609- New OBS for value:salinity COLMS:15 testsas.sas7bdat
+    DEBUG -610- [u&#39;date&#39;, u&#39;station&#39;, u&#39;rep&#39;, u&#39;TSS&#39;, u&#39;CFTSS&#39;, u&#39;Cl_a___g_ltr_&#39;, u&#39;NH4___mol_l_&#39;, u&#39;Nox___mol_l_&#39;, u&#39;SiO4___mol_l_&#39;, u&#39;Ophos___mol_l_&#39;, u&#39;Temp&#39;, u&#39;Depth&#39;, u&#39;pH&#39;, u&#39;DO_&#39;, u&#39;DO_mg_l&#39;, u&#39;salinity&#39;, u&#39;turbidity__ntu_&#39;, u&#39;conductivity&#39;]
+    INFO -645- Read file testsas.sas7bdat 44 Observations for value salinity
+
+
+    - The Observation structure stores the each variable, the mean average, and the STDEV for validation purposes.
+
+    &gt;&gt;&gt; sasob.Print()
+    salinity  from  testsas.sas7bdat
+    2011-10-21 M:  40.385 E: 0.095
+    Values:		[40.289999999999999, 40.289999999999999, 40.479999999999997, 40.479999999999997]
+    
+    :CSV Example:
+
+    - Comma Separated Value files are imported by using the **fformat=&quot;csv&quot;** switch, or by not using the **fformat=** option.
+
+
+    &gt;&gt;&gt; sasob = emlib.Observation(&quot;Cl_a___g_ltr_&quot;,filename=&quot;testcsv.csv&quot;)
+    INFO -666- Read file testsas.sas7bdat 44 Observations for value salinity
+    DEBUG -648- New OBS for value:Cl_a___g_ltr_ COLMS:5 testcsv.csv
+    DEBUG -649- [&#39;date&#39;, &#39;station&#39;, &#39;rep&#39;, &#39;TSS&#39;, &#39;CFTSS&#39;, &#39;Cl_a___g_ltr_&#39;, &#39;NH4___mol_l_&#39;, &#39;Nox___mol_l_&#39;, &#39;SiO4___mol_l_&#39;, &#39;Ophos___mol_l_&#39;, &#39;Temp&#39;, &#39;Depth&#39;, &#39;pH&#39;, &#39;DO_&#39;, &#39;DO_mg_l&#39;, &#39;salinity&#39;, &#39;turbidity__ntu_&#39;, &#39;conductivity&#39;]
+    INFO -666- Read file testcsv.csv 44 Observations for value Cl_a___g_ltr_
+
+    &gt;&gt;&gt; sasob.Print()
+    Cl_a___g_ltr_  from  testcsv.csv
+    2011-10-21 M:  4.465 E: 0.429563732175
+    Values:		[4.7999999999999998, 4.9699999999999998, 3.9500000000000002, 4.1399999999999997]
+
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self,value,dirname=None,filename=None,fformat=None):
+        self.__class__._count += 1
+        self.label = value
+        self.T = []
+        self.X = []
+        self.XM = []
+        self.XE = []
+        self.ID = self.__class__._count
+        self.dir = dirname
+        self.filename = filename
+        if not dirname:
+            self.dir = &quot;&quot; 
+
+
+        sasreader = []
+        if (fformat == &#39;sas&#39;):
+            with SAS7BDAT(os.path.join(self.dir, self.filename)) as f:
+                for row in f:
+                    sasreader.append(row)
+            firstline = sasreader[0]
+            emlog.debug(firstline)
+            emlog.debug(&quot;Searching for &quot;+self.label )
+            col = firstline.index(self.label)  #setup the value of interest
+            
+            for row in sasreader[1:]:
+                date = row[0]
+                if date in self.T:  # if we already have the same date then insert new obs
+                    if row[col] != &#39;&#39;: #only insert if there is a value
+                        self.X[len(self.T)-1].append(row[col])
+                else: #else we make a new obsT
+                    newlist = []
+                    if row[col] != &#39;&#39;:
+                        newlist.append(row[col])
+                        self.T.append(date)
+                        self.X.append(newlist)
+            
+        else:
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),&#39;rb&#39;), delimiter=&#39;,&#39;)
+            firstline = next(myspamReader)
+            
+            emlog.debug(firstline)
+            col = firstline.index(self.label)  #setup the value of interest
+            emlog.debug(&quot;New OBS for value:&quot;+str(self.label)+&quot; COLMS:&quot;+str(col)+&quot; &quot;+str(self.dir)+str(self.filename))
+            for row in myspamReader:
+                date = datetime.datetime.combine(mmddyyyy2date(row[0]),datetime.time(0,0))
+                if date in self.T:  # if we already have the same date then insert new obs
+                    if row[col] != &#39;&#39;: #only insert if there is a value
+                        self.X[len(self.T)-1].append(NuN(row[col]))
+                else: #else we make a new obsT
+                    newlist = []
+                    if row[col] != &#39;&#39;:
+                        newlist.append(NuN(row[col]))
+                        self.T.append(date)
+                        self.X.append(newlist)
+        for i in self.X:
+            self.XM.append(np.mean(i))  #mean value table
+            self.XE.append(np.std(i))   #stdev values
+    
+
+        emlog.info( &quot;Read file &quot;+self.dir+self.filename+&quot; &quot;+str(len(self.X))+&quot; Observations for value &quot;+self.label)
+<div class="viewcode-block" id="Observation.Draw"><a class="viewcode-back" href="../index.html#emlib.Observation.Draw">[docs]</a>    def Draw(self, block=True):
+        &quot;&quot;&quot;
+        Plot Observations
+
+        :param block: Blocking or non-blocking
+        :type bool: bool
+
+        Simple matplotlib plotting wrapper
+        
+        &quot;&quot;&quot;
+        plt.figure()
+        plt.suptitle(self.filename)
+        plt.plot(self.T,self.XM, &#39;ro&#39;, color=&#39;grey&#39;)
+        plt.errorbar(self.T,self.XM, yerr=self.XE, color=&#39;grey&#39;,fmt=&#39;o&#39;, linewidth=1.4)
+        plt.legend([self.label])
+        plt.show(block=block)</div>
+<div class="viewcode-block" id="Observation.Print"><a class="viewcode-back" href="../index.html#emlib.Observation.Print">[docs]</a>    def Print(self):
+        index = 0
+        print self.label, &quot; from &quot;, self.dir + self.filename
+        
+        for i in self.T:
+            print i, &quot;M: &quot;,self.XM[index], &quot;E:&quot;, self.XE[index]
+            print &quot;Values:\t\t&quot;, self.X[index]
+            index+=1
+</div></div>
+<div class="viewcode-block" id="TimeSeries"><a class="viewcode-back" href="../index.html#emlib.TimeSeries">[docs]</a>class TimeSeries:
+    &quot;&quot;&quot;
+    A series of data in time.
+    
+    :param dirname: optinal directory
+    :param filename: filename
+    :param fformat: optional file format
+    :type dirname: str
+    :type filename: str
+    :type filename: &quot;csv&quot;, &quot;sas&quot;
+
+    
+    :returns: TimeSeries Object
+    :rtype: emlib.TimeSeries
+    
+    
+    This class object is the generic table structure EasyModeler uses
+    to handle dtInput data via tables.  This class of data differes from
+    :class:`emlib.Observation` in that measurements are discrete: only one measurement of a variable is
+    made at a specific time.  This data is used to feed a :class:`emlib.Model` with dtInput data.   For validating
+    model responses use :class:`emlib.Observation` .
+
+    
+    EasyModeler 2  supports comma separated value files *CSV* and *SAS* 7 binary.
+
+
+    For CSV files the first row includes the header labels and first column is datetime 
+    in the form mm/dd/yyyy.  Future planned expansions will increase this functionality.
+
+
+    For SAS files the first column is a SAS datetime object.
+    
+    :CSV Example:
+    
+    - You have a table of data in the form of a .CSV file stored as **/mydata/monthlyphysical.csv**. 
+      Some of the cells may contain empty *Null* strings:
+    
+     +----------+---------+--------+
+     |DATE      | SALINITY| TEMP   |
+     +==========+=========+========+ 
+     |01/20/2013| 30.2    | 22.5   |
+     +----------+---------+--------+    
+     |02/19/2013| 20.2    | 15.3   |
+     +----------+---------+--------+   
+     |03/20/2013|         |    24.2|
+     +----------+---------+--------+   
+    
+    - Creating the TimeSeries object::
+     
+        &gt;&gt;&gt; myData = TimeSeries(dirname=&quot;mydata&quot;,filename=&quot;monthlyphysical.csv&quot;)
+        DEBUG -202- New INPUT table mydata\monthlyphysical.csv[&#39;DATE&#39;, &#39;SALINITY&#39;, &#39;TEMP&#39;]
+        DEBUG -212- Saved 3 rows and 2 columns
+        DEBUG -214- Converted dates to contiguous np.array
+        DEBUG -216- Converted input data to contiguous np.array
+     
+    - EasyModeler separates time and data arrays as a design decision.  EasyModeler converts time to :mod:datetime objects.  To access the date array use the member **.T** ::
+    
+        &gt;&gt;&gt; print myData.T
+        [2013-01-20 2013-02-19 2013-3-20]
+     
+    :Missing Values:
+    
+    EasyModeler coverts blank *missing* values in data streams as :class:`numpy.nan` objects.  This is advantageous for plotting and numerical operations.
+    Each non-date cell is passed to :func:`emlib.NuN` for conversion to :func:`float` values.
+    
+    .. seealso::  For more information about how :func:`emlib.NuN` handles empty strings and numerical conversions see it&#39;s documentation.
+
+    :SAS Example:
+
+    - File baywater.sas7bat is a SAS binary file stored in the working directory.  In SAS 9.3 a snippet of the  table view is:
+
+     +----------+---------+--------+
+     |DATE      | SALINITY| TEMP   |
+     +==========+=========+========+ 
+     |21OCT2011 | 40.29   | 23.03  |
+     +----------+---------+--------+    
+     |02NOV2011 | 20.2    | 15.3   |
+     +----------+---------+--------+   
+     |09NOV2011 |         |    24.2|
+     +----------+---------+--------+  
+
+     - Creating the TimeSeries object::
+     
+        &gt;&gt;&gt; myData = TimeSeries(filename=&quot;baywater.sas7bat&quot;, fformat=&quot;sas&quot;)
+        INFO -748- New TimeSeries instance: 1
+        DEBUG -778- New INPUT table testsas.sas7bdat[u&#39;date&#39;, u&#39;station&#39;, u&#39;rep&#39;, u&#39;TSS&#39;, u&#39;CFTSS&#39;, u&#39;Cl_a___g_ltr_&#39;, u&#39;NH4___mol_l_&#39;, u&#39;Nox___mol_l_&#39;, u&#39;SiO4___mol_l_&#39;, u&#39;Ophos___mol_l_&#39;, u&#39;Temp&#39;, u&#39;Depth&#39;, u&#39;pH&#39;, u&#39;DO_&#39;, u&#39;DO_mg_l&#39;, u&#39;salinity&#39;, u&#39;turbidity__ntu_&#39;, u&#39;conductivity&#39;]
+        DEBUG -805- Saved 177 rows and 17 columns
+        DEBUG -807- Converted dates to contiguous np.array
+        DEBUG -809- Converted input data to contiguous np.array
+    
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self,dirname=None,filename=None, fformat=&quot;csv&quot;):
+        self.__class__._count += 1
+        self.ID = self.__class__._count
+        emlog.info(&#39;New TimeSeries instance: &#39;+str(self.ID))
+        self.dir = dirname
+        self.filename = filename
+        self.fformat = fformat
+        
+        self.labels = []
+        if not dirname:
+            self.dir = &quot;&quot;
+        if filename:
+            self._Read()
+            
+    def _Read(self, filename=None,directory=None, fformat=None):
+        self.Rows = []
+        self.labels = []
+        self.T = []
+        self.sastmp = []
+        if directory:
+            self.dir = directory
+        if filename:
+            self.filename = filename
+        if fformat:
+            self.fformat = fformat
+        
+
+        
+        if self.fformat == &quot;sas&quot;:
+            with SAS7BDAT(os.path.join(self.dir, self.filename)) as f:
+                for row in f:
+                    self.sastmp.append(row)
+            self.labels = self.sastmp[0]
+            emlog.debug(&quot;New INPUT table &quot;+str(self.dir)+str(self.filename)+str(self.labels))
+            col = 0
+
+            hastime = 0
+            for row in self.sastmp[1:]:
+                myrow = []
+                if type(row[1]) == datetime.time:
+                    hastime = 1
+                    self.T.append(datetime.datetime.combine(row[0], row[1]))
+                    for i in range(len(self.labels))[2:]:
+                        if type(i) == None:
+                            print &quot;found none&quot;
+                            myrow.append(np.nan)
+                        else:
+                            myrow.append(row[i]) 
+                        
+                else:
+                    self.T.append(row[0])   
+                    for i in range(len(self.labels))[1:]:
+                        if type(i) == None:
+                            print &quot;found none&quot;
+                            myrow.append(np.nan)
+                        else:
+                            myrow.append(row[i])
+                newrow = []
+                for i in myrow:
+                    if i == None:
+                        newrow.append(np.nan)
+                    else:
+                        newrow.append(i)
+                self.Rows.append(newrow)
+                
+            del self.labels[0]
+            if hastime:
+                del self.labels[0]
+            del self.sastmp
+
+            
+            
+        if self.fformat == &quot;csv&quot;:        
+            myspamReader = csv.reader(open(os.path.join(self.dir, self.filename),&#39;rb&#39;), delimiter=&#39;,&#39;)
+            self.labels = next(myspamReader)
+            emlog.debug(&quot;New INPUT table &quot;+str(self.dir)+str(self.filename)+str(self.labels))
+            for row in myspamReader:
+                self.T.append(mmddyyyy2date(row[0]))
+                myrow = []
+                for i in range(len(self.labels)):
+                    if i == 0:
+                        continue
+                    myrow.append(NuN(row[i]))
+                self.Rows.append(myrow)
+            del self.labels[0]
+            
+        emlog.debug(&quot;Saved &quot;+str(len(self.T))+&quot; rows and &quot;+str(len(self.labels))+&quot; columns&quot;)
+        self.T = np.ascontiguousarray(self.T, dtype=object)
+        emlog.debug(&quot;Converted dates to contiguous np.array&quot;)
+        self.Rows = np.ascontiguousarray(self.Rows, dtype=object)
+        emlog.debug(&quot;Converted input data to contiguous np.array&quot;)
+
+<div class="viewcode-block" id="TimeSeries.Draw"><a class="viewcode-back" href="../index.html#emlib.TimeSeries.Draw">[docs]</a>    def Draw(self, block=True):
+        &quot;&quot;&quot;
+        Plot TimeSeries
+
+        :param block: Blocking or non-blocking
+        :type bool: bool
+
+        Simple matplotlib plotting wrapper
+        
+        &quot;&quot;&quot;
+        plt.figure()
+        plt.plot(self.T,self.Rows)
+        plt.legend(self.labels)
+        plt.suptitle(self.filename)
+        plt.show(block=block)</div>
+<div class="viewcode-block" id="TimeSeries.Print"><a class="viewcode-back" href="../index.html#emlib.TimeSeries.Print">[docs]</a>    def Print(self,column=None):
+        &quot;&quot;&quot;
+        Prints entire TimeSeries, or column, to **STDOUT**.
+        
+        &quot;&quot;&quot;
+        if column:
+            try:
+                self.labels.index(column)
+            except ValueError:
+                emlog.warn(str(column)+&quot; not in table. Try:&quot;+str(self.labels))
+                return
+            col = self.labels.index(column)
+            print &quot;Date\t&quot;+column
+            for i in range((len(self.T))):
+                print self.T[i],&quot;\t&quot;,self.Rows[i][col]
+        else:
+            for i in range((len(self.T))):
+                print self.T[i],&quot;\t&quot;,self.Rows[i]</div>
+<div class="viewcode-block" id="TimeSeries.GetLabels"><a class="viewcode-back" href="../index.html#emlib.TimeSeries.GetLabels">[docs]</a>    def GetLabels(self):
+        &quot;&quot;&quot;
+        Simple procedure to get array of string labels
+        
+        
+        :returns: list
+        :rtype: str
+    
+        :Example:
+        
+        - Simple print::
+        
+            &gt;&gt;&gt; print myTable.GetLabels()
+            [&#39;SALINITY&#39;, &#39;TEMP&#39;]
+         
+        &quot;&quot;&quot;
+   
+        return self.labels
+    </div>
+<div class="viewcode-block" id="TimeSeries.Get"><a class="viewcode-back" href="../index.html#emlib.TimeSeries.Get">[docs]</a>    def Get(self,columnLabel):
+        &quot;&quot;&quot;
+        Return a column as array.  
+        
+        :param columnLabel:  The column to return
+        :type param: str
+        
+        
+        :returns: list
+        :rtype: float,np.Nan,str,...
+    
+        :Example:
+        
+        - Simple grab::
+        
+            &gt;&gt;&gt; salinity =  myTable.Get(&quot;SALINITY&quot;)
+         
+         
+        &quot;&quot;&quot;
+        try:
+            self.labels.index(columnLabel)
+        except ValueError:
+            emlog.warn(str(columnLabel)+&quot; not in table. Try:&quot;+str(self.labels))
+            return []
+        col = self.labels.index(columnLabel)
+        tmp = []
+        for i in range((len(self.T))):
+            tmp.append(self.Rows[i][col])
+        return tmp
+
+    </div></div>
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../index.html#emlib.Model">[docs]</a>class Model:
+    &quot;&quot;&quot;
+    Class method creates a new ODE model structure.
+
+
+    :param ODEFunction: The ODE code function to be integrated.
+    :param jacobian: Optional jacobian matrix
+    :param algorithm: Optional integration algorithm, default *Vode*
+    :param method: Optional algorithm method type, default *bdf*
+    :param order: Optinal inegrator order, default *13*
+    :param nsteps: Optional integrator internal steps, default *3000*
+    :type ODEFunction1: Python function
+    :type jacobian: jacobian array
+    :type algorithm: str
+    :type method: str
+    :type order: int
+    :type nsteps: int
+
+    :returns: Model object
+    :rtype: emlib.Model
+
+    :Example:
+
+     - First declare an ODE_INT function. This will be passed to the :func:`scipy.integrate.odeint` integrator::
+    
+        def LV_int(initial, dtinput, constants):
+            x = initial[0]
+            y = initial[1]
+            A = 1
+            B = 1
+            C = 1
+            D = 1
+
+            x_dot = (A * x) - (B * x *y)
+            y_dot = (D * x * y) - (C * y) 
+
+            return [x_dot, y_dot]
+
+     .. seealso:: For help creating ODE_INT functions see :mod:`scipy.integrate`
+     .. warning:: Use logical operators with caution inside the ODE function.  Declaring a derivative *_dot* after a conditional will yield unpredictable results.
+
+     - Pass the ODE function to :class:`emlib.Model`  as::
+
+         &gt;&gt;&gt; myModel = emlib.Model(LV_int)
+    
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self,ODEFunction,jacobian=None,algorithm=None,method=None,order=None,nsteps=None,dt=None):
+       
+        self.__class__._count += 1
+        self.ID = self.__class__._count
+        self.dt = 1
+        self.myodesolve = scipy.integrate.ode(ODEFunction, jac=jacobian)
+        emlog.info(&#39;New Model(&#39;+str(self.ID)+&quot;): &quot;+ODEFunction.__name__)
+        if jacobian:
+            emlog.debug(&#39;Jaccobian loaded&#39;)
+        if method:
+            self.method = method
+        else:
+            self.method = &#39;bdf&#39;
+        if algorithm:
+            self.algorithm = algorithm
+        else:
+            self.algorithm = &#39;vode&#39;
+        if not method and not algorithm:
+            emlog.info(&#39;No algorithm supplied assuming vode/bfd O12 Nsteps3000 dt1&#39;)
+        if order:
+            self.order = order
+        else:
+            self.order = 12
+        if nsteps:
+            self.nsteps = nsteps
+        else:
+            self.nsteps = 3000
+        if dt:
+            self.dt = dt
+        else:
+            self.dt = 1
+        self.myodesolve.set_integrator(self.algorithm, method=self.method, order=self.order,nsteps=self.nsteps)
+        emlog.debug(&#39;Integrator:&#39;+self.algorithm+&quot;/&quot;+self.method+&quot; order:&quot;+str(self.order)+&quot; nsteps:&quot;+str(self.nsteps)+&quot; dt:&quot;+str(self.dt))
+<div class="viewcode-block" id="Model.Integrate"><a class="viewcode-back" href="../index.html#emlib.Model.Integrate">[docs]</a>    def Integrate(self,initial,maxdt=None,Calibration=None,TimeSeries=None,start=None,end=None, dt=None):
+
+        computed = []
+        computedT = []
+        
+        self.myodesolve.set_initial_value(initial,0)
+        emlog.debug(&quot;ODEINT Initials:&quot;+&quot;&quot;.join(map(str,initial)))
+
+        if dt:
+            self.dt = dt
+        
+        if TimeSeries and start:
+            s = np.where(TimeSeries.T==start)
+            if s == []:
+                emlog.error(&quot;Supplied Start &quot; + str(s[0]) + &quot;does not exist, assuming 0&quot;)
+                s = 0
+            else:
+                s = s[0][0]
+        else:
+            s = 0
+        if TimeSeries and end:
+            e = np.where(TimeSeries.T==end)
+            if not e[0]:
+                e = len(TimeSeries.T)  - 1
+                emlog.error(&quot;Supplied End does not exist, assuming &quot;+str(TimeSeries.T[e]))
+            else:
+                e = e[0][0]
+        if TimeSeries and maxdt:
+            e = maxruns + s
+            if e &gt; len(TimeSeries.T)  - 1:
+                e = len(TimeSeries.T)  - 1
+                emlog.error(&quot;Maxruns &gt; input ending, assuming &quot;+str(TimeSeries.T[e]))
+                
+        if not TimeSeries:
+            if maxdt:
+                e = maxdt * int(1 / self.dt) + s
+            else:
+                emlog.error(&quot;No maxruns specified, exiting!&quot;)
+                return 
+
+        if TimeSeries and (start is  None) and  (end is None) :
+            print &quot;here&quot;, start, end
+            s = 0
+            e = len(TimeSeries.T)
+            emlog.debug(&quot;Starting:&quot;+str(TimeSeries.T[s])+&quot; Ending:&quot;+str(len(TimeSeries.T)))
+            emlog.debug(&quot;Passing DtInput:&quot;+str(TimeSeries.GetLabels()))
+        else:
+            emlog.debug(&quot;Ending in &quot;+str(e)+&quot; runs&quot;)
+
+            
+        if Calibration:
+            emlog.debug(&quot;Passing Cs:&quot;+str(Calibration.GetLabels()))
+        
+        tcount = 0
+        for i in range(s,e,1):
+            #print s, e, i
+            if TimeSeries and Calibration:
+                self.myodesolve.set_f_params(dtInput(TimeSeries.labels,TimeSeries.Rows[i]),Calibration)
+
+            elif TimeSeries and not Calibration:
+                    self.myodesolve.set_f_params(dtInput(TimeSeries.labels,TimeSeries.Rows[i]),None)
+            elif Calibration and not TimeSeries:
+                self.myodesolve.set_f_params(None,Calibration)
+            elif not Calibration and not TimeSeries:
+                self.myodesolve.set_f_params(None,None)
+                
+  
+                
+            
+                
+            self.myodesolve.integrate(self.myodesolve.t + self.dt)
+            self.myodesolve.set_initial_value(self.myodesolve.y,self.myodesolve.t)
+            if ((tcount % 500) == 0):
+                emlog.debug( &quot;Integration dT:&quot;+str(tcount)+&quot; of &quot;+str(e - s)+&quot; Remaining:&quot;+str(e - s - tcount))
+        
+            tcount+=1
+            if TimeSeries:
+                computedT.append(TimeSeries.T[i])
+            else:
+                computedT.append(i+s)
+            computed.append(self.myodesolve.y)
+            
+        
+        self.computed = np.ascontiguousarray(computed)
+        self.computedT = computedT
+        emlog.debug(&quot;Completed Integration, created np.array shape:&quot;+str(self.computed.shape))
+        return</div>
+<div class="viewcode-block" id="Model.Draw"><a class="viewcode-back" href="../index.html#emlib.Model.Draw">[docs]</a>    def Draw(self, block=True,graph=&#39;ts&#39;,order=None):
+        &quot;&quot;&quot;
+        Plot Computed Series
+
+        :param block: Blocking or non-blocking
+        :type bool: bool
+
+        Simple matplotlib plotting wrapper
+        
+        &quot;&quot;&quot;
+
+        if graph == &#39;ts&#39;:
+            plt.figure()
+            plt.suptitle(&quot;Computed Integral&quot;)
+            plt.plot(self.computedT,self.computed)
+            plt.show(block=block)
+            
+        if graph == &#39;fp&#39;:
+            plt.figure()
+            plt.suptitle(&quot;Computed Integral&quot;)
+            if order:
+                plt.plot(self.computed[:,int(order[0])],self.computed[:,int(order[1])])
+            else:
+                plt.plot(self.computed[:,0],self.computed[:,1])
+            plt.show(block=block)
+
+        if graph == &#39;3d&#39;:
+            fig = plt.figure()
+
+            fig = plt.figure()
+            ax = Axes3D(fig)
+            fig.suptitle(&quot;Computed Integral&quot;)
+            if order:
+                ax.plot(self.computed[:,int(order[0])],self.computed[:,int(order[1])],self.computed[:,int(order[2])],label=&quot;3D Plot&quot;)
+            else:
+                
+                ax.plot(self.computed[:,0],self.computed[:,1],self.computed[:,2],label=&quot;3D Plot&quot;)
+            plt.show(block=block)
+</div>
+<div class="viewcode-block" id="Model.Validate"><a class="viewcode-back" href="../index.html#emlib.Model.Validate">[docs]</a>    def Validate(self,Observation,graph=False):
+        &quot;&quot;&quot;
+        Validate model output to observed data
+
+        :param Observation: The Observation class
+        :type Observation: emlib.Observation
+    
+        :returns: fitness object
+        :rtype: emlib.Fitness
+
+
+        This function is a wrapper for the functions :func:`emlib.GFModel` and :func:`emlib.GFSingle` .
+        Model simulation output is tested against historical Observations.  A series of Goodness of Fit statistics are returned as an :class:`emlib.Fitness` structure.
+        
+        :Example:
+        
+        &gt;&gt;&gt; Model.Integrate(calibration.initial,
+                             Calibration=calibration)
+
+        .. note::  Model is assumed to be integrated via :func:`Model.Integrate` and results stored in Model.computed
+         
+        &quot;&quot;&quot;
+        self.fit = GFModel(self,Observation)
+        if graph:
+            plt.figure()
+            plt.suptitle(&quot;Computed Integral&quot;)
+            plt.plot(self.computedT,self.computed)
+            plt.plot(Observation.T,Observation.XM, &#39;ro&#39;, color=&#39;grey&#39;)
+            plt.errorbar(Observation.T,Observation.XM, yerr=Observation.XE, color=&#39;grey&#39;,fmt=&#39;o&#39;, linewidth=1.4)
+            plt.show()
+            
+        return self.fit</div>
+<div class="viewcode-block" id="Model.Calibrate"><a class="viewcode-back" href="../index.html#emlib.Model.Calibrate">[docs]</a>    def Calibrate(self,Calibration,Observation,runs=None,TimeSeries=None,Algorithm=None,start=None,end=None,dt=None):
+        &quot;&quot;&quot;
+        Wrapper to calibrate model via supplied Monte Carlo algorithm.
+
+        :param Calibration: Model Coefficients
+        :type Calibration: emlib.Calibration
+        :param Observation: What really happend
+        :type Observation: emlib.Observation
+        :param maxruns: Maximum times to integrate
+        :type maxruns: int
+        :param TimeSeries: Optional dtInput Table
+        :type TimeSeries: emlib.TimeSeries
+        :param Algorithm: Calibration Function
+        :type Algorithm: **func**
+        :param start: Optinal simulation start
+        :type start: datetime.date,int
+        :param end: optional simulation end
+        :type end: datetime.date,int
+        
+        :returns: Model Calibration
+        :rtype: emlib.Calibration       
+
+        This function will integrate the current model *maxruns* times using the supplied **Algorithm**.  If no algorithm is supplied :func:`GF_BruteForceMSE` is assumed.
+
+        :Example:
+
+        &gt;&gt;&gt; bestCalibration = Model.Calibrate(startingCalibration,
+                                              Observation, runs=5000)
+
+        .. note::  Supplying a large *maxruns* may hang the terminal while the calibrator executes.  Using CTRL+C will break out of the program but all progress calibrating will be lost.
+
+        &quot;&quot;&quot;
+        if not Algorithm:
+            emlog.warn(&quot;No fitness method provided, assuming GF_BruteForceMSE&quot;)
+            return GF_BruteForceMSE(self,Calibration,Observation,runs,TimeSeries,start,end,dt)
+        else:
+            emlog.debug(&quot;Applying fitness function:&quot;+str(Algorithm))
+
+            return Algorithm(self,Calibration,Observation,runs,TimeSeries,start,end,dt)     
+        </div></div>
+<div class="viewcode-block" id="GF_BruteForceMSE"><a class="viewcode-back" href="../index.html#emlib.GF_BruteForceMSE">[docs]</a>def GF_BruteForceMSE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
+
+    testingC = copy.deepcopy(Calibration)
+    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+    GF = Model.Validate(Observation)
+    bestMSE = GF.MSE
+    for i in range(maxruns-1):
+        testingC.Randomize()
+        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+        GF = Model.Validate(Observation)
+        if GF.MSE &lt; bestMSE:
+            print &quot;New Best Calibration&quot;
+            Calibration = copy.deepcopy(testingC)
+            bestMSE = GF.MSE
+    return Calibration
+        </div>
+<div class="viewcode-block" id="GF_BruteForceMSERANGE"><a class="viewcode-back" href="../index.html#emlib.GF_BruteForceMSERANGE">[docs]</a>def GF_BruteForceMSERANGE(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
+
+    testingC = copy.deepcopy(Calibration)
+    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+    GF = Model.Validate(Observation)
+    bestMSE = GF.MSE
+    bestRANGE = GF.RANGE
+    for i in range(maxruns-1):
+        testingC.Randomize()
+        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+        GF = Model.Validate(Observation)
+        if (GF.MSE &lt; bestMSE) and (GF.RANGE &gt; bestRANGE) :
+            emlog.info(&quot;New Best Calibration&quot;)
+            Calibration = copy.deepcopy(testingC)
+            bestMSE = GF.MSE
+            GF.Print()
+    return Calibration
+        </div>
+<div class="viewcode-block" id="GF_BruteForceRMSD"><a class="viewcode-back" href="../index.html#emlib.GF_BruteForceRMSD">[docs]</a>def GF_BruteForceRMSD(Model,Calibration,Observation,maxruns,TimeSeries=None,start=None,end=None,dt=None):
+
+    testingC = copy.deepcopy(Calibration)
+    Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end,dt=dt)
+    GF = Model.Validate(Observation)
+    bestRMSD = GF.RMSD
+    orgRMSD = GF.RMSD
+    for i in range(maxruns-1):
+        testingC.Randomize()
+        Model.Integrate(testingC.initial,Calibration=testingC, TimeSeries=TimeSeries, start=start, end=end)
+        GF = Model.Validate(Observation)
+        if (GF.RMSD &gt; bestRMSD) :
+            print (&quot;New Best Calibration:&quot; +str(GF.RMSD) + &quot; prev:&quot; + str(bestRMSD) + &quot; orig:&quot; +str(orgRMSD))
+            Calibration = copy.deepcopy(testingC)
+            bestRMSD = GF.RMSD
+        else:
+            emlog.info(&quot;Int:&quot; +str(i) + &quot; RMSD Current: &quot;+ str(GF.RMSD) + &quot; Best:&quot; + str(bestRMSD) + &quot; Orig:&quot; +str(orgRMSD))
+
+            
+    return Calibration
+      
+</div>
+<div class="viewcode-block" id="Fitness"><a class="viewcode-back" href="../index.html#emlib.Fitness">[docs]</a>class Fitness:
+    &quot;&quot;&quot;
+    Goodness of Fit Structure
+    
+    
+    :param fit: list of fitness measurements
+    :type fit: list
+    
+    :Attributes:
+    
+    * *Fitness.matches*         Number of fitness values 
+    * *Fitness.MSE*             Mean Square Error
+    * *Fitness.WMSE*            Weighted Mean Square Error
+    * *Fitness.RANGE*           % Inside STDEV
+    * *Fitness.MSER*            Mean Square Error outside STDEV
+    * *Fitness.O*               list of observed means
+    * *Fitness.E*               list of expected values
+        
+    This is an internal :mod:`emlib` structure for housing Goodness of Fit statistics.
+    &quot;&quot;&quot;
+    _count = 0
+    def __init__(self,fit):
+        self.__class__._count += 1
+        self.ID = self.__class__._count
+        self.matches = fit[0]
+        self.MSE = fit[1]
+        self.WMSE = fit[2]
+        self.RANGE = fit[3]
+        self.MSER = fit[4]
+        self.O = fit[5]
+        self.E = fit[6]
+        self.RMSD = fit[7]
+        self.Xtot = fit[8]
+        emlog.debug(&quot;New fitness object:&quot;+str(self.ID))
+<div class="viewcode-block" id="Fitness.Print"><a class="viewcode-back" href="../index.html#emlib.Fitness.Print">[docs]</a>    def Print(self):
+        &quot;&quot;&quot;
+        Print all statistics to STDOUT
+        &quot;&quot;&quot;
+        print(&quot;GFMODEL #&quot;+str(self.matches)+&quot;Xtot:&quot;+str(self.Xtot)+&quot; RMSD:&quot;+str(self.RMSD)+&quot; RMSE:&quot;+str(self.MSE)+&quot; RANGE%&quot;+str(self.RANGE)+&quot; MSER:&quot;+str(self.MSER)+&quot; WMSE:&quot;+str(self.WMSE))
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Evan L Turner.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3b3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.1</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

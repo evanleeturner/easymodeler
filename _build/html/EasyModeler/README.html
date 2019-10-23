@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Requirements &mdash; EasyModeler 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="EasyModeler 2.1.1 documentation" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">EasyModeler 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>EasyModeler is a package for calibration and
+validation of Ordinary Differential Equations ODEs to sample data.</p>
+<div class="section" id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Python 2.6 or 2.7</li>
+<li>SciPy and NumPy 2.6 or 2.7</li>
+<li>Matplotlib 2.6 or 2.7</li>
+<li>sas7bdat</li>
+</ul>
+</div>
+<div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>ODEINT Wrapper        Intelligent non-invasive wrapper to SciPy&#8217;s integrator</li>
+<li>ODE Calibration       Auto-calibrate a series of ODEs to data</li>
+<li>TimeSeries Files      Handling of dtInput</li>
+<li>Model Validation      Validate using Goodness of Fit statistics</li>
+<li>Graphical Plotting    Basic plotting via matplotlib</li>
+<li>Graphical Interface   Coming in version 2.3</li>
+</ul>
+</div>
+<div class="section" id="documentation-and-userguide">
+<h1>Documentation and Userguide<a class="headerlink" href="#documentation-and-userguide" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="https://dl.dropboxusercontent.com/u/66459905/site/index.html">https://dl.dropboxusercontent.com/u/66459905/site/index.html</a></li>
+<li>Supports comprehensive autodocs with example usage inside source!</li>
+<li>Looking for a permanent document home online <em>please suggest ideas to me!</em></li>
+</ul>
+</div>
+<div class="section" id="install-as-python-module">
+<h1>Install as python module<a class="headerlink" href="#install-as-python-module" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="from-internet">
+<h2>from internet<a class="headerlink" href="#from-internet" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>$ easy_install easymodeler
+</pre></div>
+</div>
+</div>
+<div class="section" id="from-archive">
+<h2>from archive<a class="headerlink" href="#from-archive" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>$ unzip easymodeler-x.x.x.zip
+$ cd easymodler-x.x.x
+$ python setup.py install
+</pre></div>
+</div>
+<p>Change Log
+2.2.6 (2016-3-29)
+~~~~~~~~~~~~~~~~~
+* bugfixes
+* added RMSD GOF parameter</p>
+<ul class="simple">
+<li>bugfixes</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h2>2.2.4 (2015-4-22)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>bugfixes</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>2.2.3 (2015-4-1)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>bugfixes</li>
+<li>dtinput fixes</li>
+<li>example dataset inclusion</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>2.2.2 (2015-3-31)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>SAS filetype support</li>
+<li>fixes to calibration</li>
+<li>autodocs continue to update</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h2>2.2.1 (2015-3-27)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Additions to Calibration object</li>
+<li>GraphOpt object creation</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h2>2.2  (2015-3-26)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Rollout of simple plotting interface</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>2.1.9 (2015-3-25)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>autodocs continue to update</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h2>2.1.4 - 2.1.8 (2015-3-10)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>trying yet again to fix the pypi readme</li>
+<li>autodocs continue to update</li>
+<li>rename functions to naming conventions</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h2>2.0.0 - 2.1.3 (2015-3-6)<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>autodocs continue to update</li>
+<li>README change</li>
+<li>Sample Example</li>
+<li>LICENSE</li>
+</ul>
+</div>
+</div>
+<div class="section" id="acknowledgements">
+<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h1>
+<p>Support for this project was made possible by grant number NA11NOS0120024 from NOAA
+to support the Gulf of Mexico Coastal Ocean Observing System (GCOOS) via subcontract
+S120015 from the TAMU Research Foundation.</p>
+</div>
+<div class="section" id="sample-usage">
+<h1>Sample Usage<a class="headerlink" href="#sample-usage" title="Permalink to this headline">¶</a></h1>
+<p>Here is a snippet of the userguide available at  <a class="reference external" href="https://dl.dropboxusercontent.com/u/66459905/site/index.html">https://dl.dropboxusercontent.com/u/66459905/site/index.html</a></p>
+</div>
+<div class="section" id="example-1">
+<h1>Example 1<a class="headerlink" href="#example-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="lotka-volterra-predator-prey-interaction">
+<h2>Lotka Volterra Predator Prey Interaction<a class="headerlink" href="#lotka-volterra-predator-prey-interaction" title="Permalink to this headline">¶</a></h2>
+<p>The Lotka Volterra system is a simple model of predator-prey dynamics and consists of two coupled differentials. <a class="reference external" href="http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation">http://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equation</a></p>
+<p>This is a simple example highlighting <strong>EasyModler&#8217;s</strong> ability to integrate ODEs without complication! At a minimum to integrate we require:</p>
+<ol class="arabic simple">
+<li>A defined ODE function</li>
+<li>A set of initial conditions as a list</li>
+<li>Number of times to run the integrator</li>
+</ol>
+<p>Declare an ODE_INT function in your source code. This will be passed to the <strong>scipy.integrate.odeint</strong> integrator</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LV_int</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">initial</span><span class="p">,</span><span class="n">dtinput</span><span class="p">,</span><span class="n">coefficients</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Pass the ODE function to <strong>emlib.Model</strong>  as</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">emlib</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">LV_int</span><span class="p">)</span>
+<span class="go">INFO -512- New Model(1): LV_int</span>
+<span class="go">INFO -524- No algorithm supplied assuming vode/bfd O12 Nsteps3000</span>
+</pre></div>
+</div>
+<p>Now lets integrate our LV function for 200 timesteps!</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">LV</span><span class="o">.</span><span class="n">Integrate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span><span class="n">maxdt</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="go">DEBUG -541- ODEINT Initials:11</span>
+<span class="go">DEBUG -579- Ending in 200 runs</span>
+<span class="go">DEBUG -600- Integration dT:0 of 200 Remaining:200</span>
+<span class="go">DEBUG -612- Completed Integration, created np.array shape:(200, 2)</span>
+</pre></div>
+</div>
+<p>The model output is stored in the <strong>emlib.Model</strong> object as arrays <em>computedT</em> and <em>computed</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">LV</span><span class="o">.</span><span class="n">computed</span>
+<span class="go">[[ 0.37758677  2.93256414]</span>
+<span class="go">[ 0.13075395  1.32273451]</span>
+<span class="go">[ 0.14707288  0.55433421]</span>
+<span class="go">[ 0.27406944  0.24884565]</span>
+</pre></div>
+</div>
+<p><strong>EasyModeler</strong> is organized where time is stored separately from data.
+This is a design feature to aid processing timeseries data.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Requirements</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#documentation-and-userguide">Documentation and Userguide</a></li>
+<li><a class="reference internal" href="#install-as-python-module">Install as python module</a><ul>
+<li><a class="reference internal" href="#from-internet">from internet</a></li>
+<li><a class="reference internal" href="#from-archive">from archive</a></li>
+<li><a class="reference internal" href="#id1">2.2.4 (2015-4-22)</a></li>
+<li><a class="reference internal" href="#id2">2.2.3 (2015-4-1)</a></li>
+<li><a class="reference internal" href="#id3">2.2.2 (2015-3-31)</a></li>
+<li><a class="reference internal" href="#id4">2.2.1 (2015-3-27)</a></li>
+<li><a class="reference internal" href="#id5">2.2  (2015-3-26)</a></li>
+<li><a class="reference internal" href="#id6">2.1.9 (2015-3-25)</a></li>
+<li><a class="reference internal" href="#id7">2.1.4 - 2.1.8 (2015-3-10)</a></li>
+<li><a class="reference internal" href="#id8">2.0.0 - 2.1.3 (2015-3-6)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#acknowledgements">Acknowledgements</a></li>
+<li><a class="reference internal" href="#sample-usage">Sample Usage</a></li>
+<li><a class="reference internal" href="#example-1">Example 1</a><ul>
+<li><a class="reference internal" href="#lotka-volterra-predator-prey-interaction">Lotka Volterra Predator Prey Interaction</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/EasyModeler/README.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Evan L Turner.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3b3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.1</a>
+      
+      |
+      <a href="../_sources/EasyModeler/README.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>

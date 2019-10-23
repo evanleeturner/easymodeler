@@ -1,0 +1,1200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>EasyModeler 2 &mdash; EasyModeler 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="EasyModeler 2.1.1 documentation" href="#" />
+    <link rel="next" title="Download and Install" href="install.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Download and Install"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">EasyModeler 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="easymodeler-2">
+<h1>EasyModeler 2<a class="headerlink" href="#easymodeler-2" title="Permalink to this headline">¶</a></h1>
+<p>EasyModeler is a Python toolbox for simulating and calibrating series of ordinary differential equations ODEs using <code class="xref py py-mod docutils literal"><span class="pre">SciPy</span></code> and <code class="xref py py-mod docutils literal"><span class="pre">NumPy</span></code>.</p>
+<div class="section" id="guides-and-examples">
+<h2>Guides and Examples<a class="headerlink" href="#guides-and-examples" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Download and Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="userguide.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#simple-model-integration">1. Simple Model Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#managing-model-coefficients">2. Managing Model Coefficients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#model-input">3. Model Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#validating-a-model-to-observation-data">4. Validating a Model to Observation Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#calibrating-a-model-to-observation-data">5. Calibrating a Model to Observation Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#handling-sas-binary-files">6. Handling SAS Binary Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="userguide.html#logging-and-debugging">7. Logging and Debugging</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-emlib">
+<span id="library-documentation"></span><h2>Library Documentation<a class="headerlink" href="#module-emlib" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="emlib.Calibration">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">Calibration</code><span class="sig-paren">(</span><em>coeffs=None</em>, <em>directory=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>A collection of <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a> for a model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>coeffs=</strong> (<em>list,emlib.Coefficient</em>) &#8211; list of <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a></li>
+<li><strong>directory=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; directory</li>
+<li><strong>filename=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; filename</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="emlib.Calibration.Add">
+<code class="descname">Add</code><span class="sig-paren">(</span><em>label</em>, <em>val=None</em>, <em>min=None</em>, <em>max=None</em>, <em>isconst=None</em>, <em>desc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a single coefficient to the calibration set</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Get">
+<code class="descname">Get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a> objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list of <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.GetC">
+<code class="descname">GetC</code><span class="sig-paren">(</span><em>tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.GetC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.GetC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a single <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a> structure by label</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tag</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Coefficient label</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Coefficient</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient">emlib.Coefficient</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.GetLabels">
+<code class="descname">GetLabels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.GetLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.GetLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of all <a class="reference internal" href="#emlib.Coefficient" title="emlib.Coefficient"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient</span></code></a> labels</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">: list of labels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Print">
+<code class="descname">Print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints <a class="reference internal" href="#emlib.Calibration" title="emlib.Calibration"><code class="xref py py-class docutils literal"><span class="pre">emlib.Calibration</span></code></a> structure to STDOUT</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">benthosCal</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="go">Label       Value   Min     Max     ISConst Desc</span>
+<span class="go">Kbg         1.0     0.5     1.0     False   growth</span>
+<span class="go">Kbm         0.001   0.0001  0.2     False   mortality       </span>
+<span class="go">Kdd         1.0     0.05    3.0     False   depth mort</span>
+<span class="go">Bcc         20.0    nan     nan     True    carrying cap</span>
+<span class="go">Ktg         0.9     0.5     15.0    False   </span>
+<span class="go">Sopt        15.0    nan     nan     True    opt salinity</span>
+<span class="go">Ksg         8.0     6.0     15.0    False   </span>
+<span class="go">Ksd         2.2     0.9     7.0     False   </span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Randomize">
+<code class="descname">Randomize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Randomize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Randomize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomizes all coefficients that have <strong>emlib.Coefficient.isconst</strong> set to <em>False</em></p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#emlib.Coefficient.Randomize" title="emlib.Coefficient.Randomize"><code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.Randomize</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Read">
+<code class="descname">Read</code><span class="sig-paren">(</span><em>filename</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read Coefficients from CSV file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>directory=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; directory</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; filename</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>We have a CSV file called bcfile.csv in the working directory.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="16%" />
+<col width="14%" />
+<col width="14%" />
+<col width="16%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Label</th>
+<th class="head">Value</th>
+<th class="head">min</th>
+<th class="head">Max</th>
+<th class="head">ISConst</th>
+<th class="head">Desc</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>kbg</td>
+<td>1</td>
+<td>0.5</td>
+<td>1</td>
+<td>0</td>
+<td>growth</td>
+</tr>
+<tr class="row-odd"><td>kbm</td>
+<td>0.001</td>
+<td>0.0001</td>
+<td>.2</td>
+<td>0</td>
+<td>mortality</td>
+</tr>
+<tr class="row-even"><td>kdd</td>
+<td>1</td>
+<td>0.05</td>
+<td>3</td>
+<td>0</td>
+<td>depth mort</td>
+</tr>
+<tr class="row-odd"><td>Bcc</td>
+<td>20</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>1</td>
+<td>carrying cap</td>
+</tr>
+<tr class="row-even"><td>Ktg</td>
+<td>0.9</td>
+<td>0.5</td>
+<td>15</td>
+<td>0</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Sopt</td>
+<td>15</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>1</td>
+<td>opt salinity</td>
+</tr>
+<tr class="row-even"><td>Ksg</td>
+<td>8</td>
+<td>6</td>
+<td>15</td>
+<td>0</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>Ksd</td>
+<td>2.2</td>
+<td>0.9</td>
+<td>7</td>
+<td>0</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">benthosCal</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Calibration</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">benthosCal</span><span class="o">.</span><span class="n">Read</span><span class="p">(</span><span class="n">bcfile</span><span class="o">.</span><span class="n">csv</span><span class="p">)</span>
+<span class="go">INFO -243- New Calibration instance: 1</span>
+<span class="go">DEBUG -351- C:1 Kbg 1.0</span>
+<span class="go">DEBUG -351- C:2 Kbm 0.001</span>
+<span class="go">DEBUG -351- C:3 Kdd 1.0</span>
+<span class="go">DEBUG -351- C:4 Bcc 20.0</span>
+<span class="go">DEBUG -351- C:5 Ktg 0.9</span>
+<span class="go">DEBUG -351- C:6 Sopt 15.0</span>
+<span class="go">DEBUG -351- C:7 Ksg 8.0</span>
+<span class="go">DEBUG -351- C:8 Ksd 2.2</span>
+<span class="go">INFO -272- imported C file</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.SetCoeffs">
+<code class="descname">SetCoeffs</code><span class="sig-paren">(</span><em>Coeffs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.SetCoeffs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.SetCoeffs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy coefficients from array</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.UpdateC">
+<code class="descname">UpdateC</code><span class="sig-paren">(</span><em>tag</em>, <em>val=None</em>, <em>min=None</em>, <em>max=None</em>, <em>isconst=None</em>, <em>desc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.UpdateC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.UpdateC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update an existing Coefficient in the calibration set</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Val">
+<code class="descname">Val</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Val" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns value of coefficient by label</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Calibration.Write">
+<code class="descname">Write</code><span class="sig-paren">(</span><em>directory=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Calibration.Write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Calibration.Write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write coefficients to CSV file.  Will overwrite contents if file exists.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.Coefficient">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">Coefficient</code><span class="sig-paren">(</span><em>label</em>, <em>val=None</em>, <em>min=None</em>, <em>max=None</em>, <em>isconst=None</em>, <em>desc=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Coefficient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Coefficient" title="Permalink to this definition">¶</a></dt>
+<dd><p>A single parameter coefficient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; short description</li>
+<li><strong>val=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; coefficient value</li>
+<li><strong>min=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; minimum value</li>
+<li><strong>max=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; maximum value</li>
+<li><strong>isconst=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; is mutable coefficient?</li>
+<li><strong>desc=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Long description</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="emlib.Coefficient.Get">
+<code class="descname">Get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Coefficient.Get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Coefficient.Get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns entire Coefficient structure as an array list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">label,var,min,max,isconst,desc</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Coefficient.Print">
+<code class="descname">Print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Coefficient.Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Coefficient.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints Coefficient structure to STDOUT.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Coefficient.Randomize">
+<code class="descname">Randomize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Coefficient.Randomize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Coefficient.Randomize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomizes coefficient between <code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.min</span></code> and <code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.max</span></code> 
+using <code class="xref py py-func docutils literal"><span class="pre">numpy.random.uniform()</span></code></p>
+<p>If <strong>Coefficient.isconst</strong> is <em>True</em> function returns without randomizing.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Why do we need a <code class="xref py py-mod docutils literal"><span class="pre">boolean</span></code> value <code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.isconst</span></code>?  Even though <code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.min</span></code> and <code class="xref py py-class docutils literal"><span class="pre">emlib.Coefficient.max</span></code>  could exist we may want to set this Coefficient to constant dynamically during a calibration algorithm.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Coefficient.SetRange">
+<code class="descname">SetRange</code><span class="sig-paren">(</span><em>min</em>, <em>max</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Coefficient.SetRange"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Coefficient.SetRange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset our min and max allowable values for Coefficient.  This is useful for Monte Carlo algorithms that will tune each coefficient during the calibration process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>min=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; minimum value</li>
+<li><strong>max=</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; maximum value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.EMDraw">
+<code class="descclassname">emlib.</code><code class="descname">EMDraw</code><span class="sig-paren">(</span><em>GraphOpt</em>, <em>x</em>, <em>y</em>, <em>z=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#EMDraw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.EMDraw" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="xref py py-func docutils literal"><span class="pre">matplotlib.plt()</span></code> wrapper</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.Fitness">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">Fitness</code><span class="sig-paren">(</span><em>fit</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Fitness"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Fitness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goodness of Fit Structure</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fit</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of fitness measurements</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><em>Fitness.matches</em>         Number of fitness values</li>
+<li><em>Fitness.MSE</em>             Mean Square Error</li>
+<li><em>Fitness.WMSE</em>            Weighted Mean Square Error</li>
+<li><em>Fitness.RANGE</em>           % Inside STDEV</li>
+<li><em>Fitness.MSER</em>            Mean Square Error outside STDEV</li>
+<li><em>Fitness.O</em>               list of observed means</li>
+<li><em>Fitness.E</em>               list of expected values</li>
+</ul>
+<p>This is an internal <a class="reference internal" href="#module-emlib" title="emlib"><code class="xref py py-mod docutils literal"><span class="pre">emlib</span></code></a> structure for housing Goodness of Fit statistics.</p>
+<dl class="method">
+<dt id="emlib.Fitness.Print">
+<code class="descname">Print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Fitness.Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Fitness.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print all statistics to STDOUT</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.GFModel">
+<code class="descclassname">emlib.</code><code class="descname">GFModel</code><span class="sig-paren">(</span><em>model</em>, <em>Observation</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#GFModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GFModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits Model results to Observation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> (<a class="reference internal" href="#emlib.Model" title="emlib.Model"><em>emlib.Model</em></a>) &#8211; Model to test</li>
+<li><strong>Observation</strong> (<a class="reference internal" href="#emlib.Observation" title="emlib.Observation"><em>emlib.Observation</em></a>) &#8211; Historical Observation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Fitness object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#emlib.Fitness" title="emlib.Fitness">emlib.Fitness</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.GFSingle">
+<code class="descclassname">emlib.</code><code class="descname">GFSingle</code><span class="sig-paren">(</span><em>mean</em>, <em>stdev</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#GFSingle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GFSingle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test fitness of single model dT</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>mean</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Observation Mean</li>
+<li><strong>stdev</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Observation STDEV</li>
+<li><strong>model</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Simulated value <strong>expected</strong></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">MSE,WMSE,RANGE,MSER</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float,float,float,float</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This is a pattern match program which tests goodness of fit
+for asingle point for models against Observation results.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function typically only called by <a class="reference internal" href="#emlib.GFModel" title="emlib.GFModel"><code class="xref py py-func docutils literal"><span class="pre">emlib.GFModel()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.GF_BruteForceMSE">
+<code class="descclassname">emlib.</code><code class="descname">GF_BruteForceMSE</code><span class="sig-paren">(</span><em>Model</em>, <em>Calibration</em>, <em>Observation</em>, <em>maxruns</em>, <em>TimeSeries=None</em>, <em>start=None</em>, <em>end=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#GF_BruteForceMSE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GF_BruteForceMSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="emlib.GF_BruteForceMSERANGE">
+<code class="descclassname">emlib.</code><code class="descname">GF_BruteForceMSERANGE</code><span class="sig-paren">(</span><em>Model</em>, <em>Calibration</em>, <em>Observation</em>, <em>maxruns</em>, <em>TimeSeries=None</em>, <em>start=None</em>, <em>end=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#GF_BruteForceMSERANGE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GF_BruteForceMSERANGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="emlib.GF_BruteForceRMSD">
+<code class="descclassname">emlib.</code><code class="descname">GF_BruteForceRMSD</code><span class="sig-paren">(</span><em>Model</em>, <em>Calibration</em>, <em>Observation</em>, <em>maxruns</em>, <em>TimeSeries=None</em>, <em>start=None</em>, <em>end=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#GF_BruteForceRMSD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GF_BruteForceRMSD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="emlib.GraphOpt">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">GraphOpt</code><a class="reference internal" href="_modules/emlib.html#GraphOpt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.GraphOpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advanced graphing options to pass to <code class="xref py py-func docutils literal"><span class="pre">matplotlib.plt()</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.Model">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">Model</code><span class="sig-paren">(</span><em>ODEFunction</em>, <em>jacobian=None</em>, <em>algorithm=None</em>, <em>method=None</em>, <em>order=None</em>, <em>nsteps=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method creates a new ODE model structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ODEFunction</strong> &#8211; The ODE code function to be integrated.</li>
+<li><strong>jacobian</strong> (<em>jacobian array</em>) &#8211; Optional jacobian matrix</li>
+<li><strong>algorithm</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional integration algorithm, default <em>Vode</em></li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional algorithm method type, default <em>bdf</em></li>
+<li><strong>order</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Optinal inegrator order, default <em>13</em></li>
+<li><strong>nsteps</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Optional integrator internal steps, default <em>3000</em></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Model object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#emlib.Model" title="emlib.Model">emlib.Model</a></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"><ul class="first">
+<li><p class="first">First declare an ODE_INT function. This will be passed to the <code class="xref py py-func docutils literal"><span class="pre">scipy.integrate.odeint()</span></code> integrator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">LV_int</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">dtinput</span><span class="p">,</span> <span class="n">constants</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">x_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">y_dot</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">C</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> 
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span> <span class="n">y_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For help creating ODE_INT functions see <code class="xref py py-mod docutils literal"><span class="pre">scipy.integrate</span></code></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Use logical operators with caution inside the ODE function.  Declaring a derivative <em>_dot</em> after a conditional will yield unpredictable results.</p>
+</div>
+<ul class="last">
+<li><p class="first">Pass the ODE function to <a class="reference internal" href="#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a>  as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myModel</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">LV_int</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="emlib.Model.Calibrate">
+<code class="descname">Calibrate</code><span class="sig-paren">(</span><em>Calibration</em>, <em>Observation</em>, <em>runs=None</em>, <em>TimeSeries=None</em>, <em>Algorithm=None</em>, <em>start=None</em>, <em>end=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Model.Calibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Model.Calibrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper to calibrate model via supplied Monte Carlo algorithm.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Calibration</strong> (<a class="reference internal" href="#emlib.Calibration" title="emlib.Calibration"><em>emlib.Calibration</em></a>) &#8211; Model Coefficients</li>
+<li><strong>Observation</strong> (<a class="reference internal" href="#emlib.Observation" title="emlib.Observation"><em>emlib.Observation</em></a>) &#8211; What really happend</li>
+<li><strong>maxruns</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Maximum times to integrate</li>
+<li><strong>TimeSeries</strong> (<a class="reference internal" href="#emlib.TimeSeries" title="emlib.TimeSeries"><em>emlib.TimeSeries</em></a>) &#8211; Optional dtInput Table</li>
+<li><strong>Algorithm</strong> (<strong>func</strong>) &#8211; Calibration Function</li>
+<li><strong>start</strong> (<em>datetime.date,int</em>) &#8211; Optinal simulation start</li>
+<li><strong>end</strong> (<em>datetime.date,int</em>) &#8211; optional simulation end</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Model Calibration</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#emlib.Calibration" title="emlib.Calibration">emlib.Calibration</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This function will integrate the current model <em>maxruns</em> times using the supplied <strong>Algorithm</strong>.  If no algorithm is supplied <a class="reference internal" href="#emlib.GF_BruteForceMSE" title="emlib.GF_BruteForceMSE"><code class="xref py py-func docutils literal"><span class="pre">GF_BruteForceMSE()</span></code></a> is assumed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bestCalibration</span> <span class="o">=</span> <span class="n">Model</span><span class="o">.</span><span class="n">Calibrate</span><span class="p">(</span><span class="n">startingCalibration</span><span class="p">,</span>
+<span class="go">                                      Observation, runs=5000)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Supplying a large <em>maxruns</em> may hang the terminal while the calibrator executes.  Using CTRL+C will break out of the program but all progress calibrating will be lost.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Model.Draw">
+<code class="descname">Draw</code><span class="sig-paren">(</span><em>block=True</em>, <em>graph='ts'</em>, <em>order=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Model.Draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Model.Draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Computed Series</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>block</strong> &#8211; Blocking or non-blocking</td>
+</tr>
+</tbody>
+</table>
+<p>Simple matplotlib plotting wrapper</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Model.Integrate">
+<code class="descname">Integrate</code><span class="sig-paren">(</span><em>initial</em>, <em>maxdt=None</em>, <em>Calibration=None</em>, <em>TimeSeries=None</em>, <em>start=None</em>, <em>end=None</em>, <em>dt=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Model.Integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Model.Integrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="emlib.Model.Validate">
+<code class="descname">Validate</code><span class="sig-paren">(</span><em>Observation</em>, <em>graph=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Model.Validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Model.Validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate model output to observed data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Observation</strong> (<a class="reference internal" href="#emlib.Observation" title="emlib.Observation"><em>emlib.Observation</em></a>) &#8211; The Observation class</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fitness object</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#emlib.Fitness" title="emlib.Fitness">emlib.Fitness</a></td>
+</tr>
+</tbody>
+</table>
+<p>This function is a wrapper for the functions <a class="reference internal" href="#emlib.GFModel" title="emlib.GFModel"><code class="xref py py-func docutils literal"><span class="pre">emlib.GFModel()</span></code></a> and <a class="reference internal" href="#emlib.GFSingle" title="emlib.GFSingle"><code class="xref py py-func docutils literal"><span class="pre">emlib.GFSingle()</span></code></a> .
+Model simulation output is tested against historical Observations.  A series of Goodness of Fit statistics are returned as an <a class="reference internal" href="#emlib.Fitness" title="emlib.Fitness"><code class="xref py py-class docutils literal"><span class="pre">emlib.Fitness</span></code></a> structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Model</span><span class="o">.</span><span class="n">Integrate</span><span class="p">(</span><span class="n">calibration</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span>
+<span class="go">                     Calibration=calibration)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Model is assumed to be integrated via <a class="reference internal" href="#emlib.Model.Integrate" title="emlib.Model.Integrate"><code class="xref py py-func docutils literal"><span class="pre">Model.Integrate()</span></code></a> and results stored in Model.computed</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.NuN">
+<code class="descclassname">emlib.</code><code class="descname">NuN</code><span class="sig-paren">(</span><em>value</em>, <em>Type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#NuN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.NuN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to convert a string into a float, numpy.nan, or specified type.  Returns the conversion or the original string if failed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The string to convert.</li>
+<li><strong>Type</strong> (<em>float,int,str,...</em>) &#8211; Optinal type to convert value to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float,numpy.nan,str,...</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><strong>Advantages</strong>:</dt>
+<dd><ul class="first last simple">
+<li>This function is useful in sanitizing text input files.</li>
+</ul>
+</dd>
+<dt><strong>Drawbacks</strong>:</dt>
+<dd><ul class="first last simple">
+<li>Does not alert calling function if conversion failed.</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>If value(str) is &#8220;NaN&#8221;  or &#8220;None&#8221;, <strong>NuN</strong> will return <em>numpy.nan</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">toTest</span> <span class="o">=</span> <span class="s">&quot;NaN&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sanitized</span> <span class="o">=</span> <span class="n">NuN</span><span class="p">(</span><span class="n">toTest</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sanitized</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p><strong>NuN</strong> will try to convert value (str) into a float.  If this is unsuccessful <strong>NuN</strong> will return the string.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="s">&quot;3.4&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="s">&quot;three point four&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">NuN</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">NuN</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">&lt;type &#39;float&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="go">&lt;type &#39;str&#39;&gt;</span>
+</pre></div>
+</div>
+<p>Empty strings will be returned as <em>numpy.nan</em>.  This is useful for importing data tables with missing values for cells.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">empty</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sanitized</span> <span class="o">=</span> <span class="n">NuN</span><span class="p">(</span><span class="n">empty</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">sanitized</span>
+<span class="go">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">numpy</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">sanitized</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Occasionally we may want to import a series of text values as int instead of float.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">string</span> <span class="o">=</span> <span class="s">&quot;5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">integer</span> <span class="o">=</span> <span class="n">NuN</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">Type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">integer</span><span class="p">)</span>
+<span class="go">&lt;type &#39;int&#39;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.Observation">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">Observation</code><span class="sig-paren">(</span><em>value</em>, <em>dirname=None</em>, <em>filename=None</em>, <em>fformat=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Observation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Observation" title="Permalink to this definition">¶</a></dt>
+<dd><p>A series of observations and replicates to validate a model.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; </li>
+<li><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; optinal directory</li>
+<li><strong>filename</strong> (<em>&#8220;csv&#8221;, &#8220;sas&#8221;</em>) &#8211; filename</li>
+<li><strong>fformat</strong> &#8211; optional file format</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Observation Object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#emlib.Observation" title="emlib.Observation">emlib.Observation</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This class object is the generic table structure EasyModeler uses
+to handle validation data via tables.  This class of data differes from
+<a class="reference internal" href="#emlib.TimeSeries" title="emlib.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">emlib.TimeSeries</span></code></a> in that replicates of measurements are made at the same time.
+This data is used to <a class="reference internal" href="#emlib.Model.Validate" title="emlib.Model.Validate"><code class="xref py py-func docutils literal"><span class="pre">emlib.Model.Validate()</span></code></a> a model to observations.</p>
+<p>EasyModeler 2  supports comma separated value files <em>CSV</em> and <em>SAS</em> 7 binary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">SAS Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Data is stored in a SAS 7 binary file <strong>testsas.sas7bdat</strong> in the working directory. The salinity observations</li>
+</ul>
+<p>of this file will be used to validate a model response.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sasob</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Observation</span><span class="p">(</span><span class="s">&quot;salinity&quot;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;testsas.sas7bdat&quot;</span><span class="p">,</span><span class="n">fformat</span><span class="o">=</span><span class="s">&quot;sas&quot;</span><span class="p">)</span>
+<span class="go">DEBUG -609- New OBS for value:salinity COLMS:15 testsas.sas7bdat</span>
+<span class="go">DEBUG -610- [u&#39;date&#39;, u&#39;station&#39;, u&#39;rep&#39;, u&#39;TSS&#39;, u&#39;CFTSS&#39;, u&#39;Cl_a___g_ltr_&#39;, u&#39;NH4___mol_l_&#39;, u&#39;Nox___mol_l_&#39;, u&#39;SiO4___mol_l_&#39;, u&#39;Ophos___mol_l_&#39;, u&#39;Temp&#39;, u&#39;Depth&#39;, u&#39;pH&#39;, u&#39;DO_&#39;, u&#39;DO_mg_l&#39;, u&#39;salinity&#39;, u&#39;turbidity__ntu_&#39;, u&#39;conductivity&#39;]</span>
+<span class="go">INFO -645- Read file testsas.sas7bdat 44 Observations for value salinity</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The Observation structure stores the each variable, the mean average, and the STDEV for validation purposes.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sasob</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="go">salinity  from  testsas.sas7bdat</span>
+<span class="go">2011-10-21 M:  40.385 E: 0.095</span>
+<span class="go">Values:             [40.289999999999999, 40.289999999999999, 40.479999999999997, 40.479999999999997]</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">CSV Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Comma Separated Value files are imported by using the <strong>fformat=&#8221;csv&#8221;</strong> switch, or by not using the <strong>fformat=</strong> option.</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sasob</span> <span class="o">=</span> <span class="n">emlib</span><span class="o">.</span><span class="n">Observation</span><span class="p">(</span><span class="s">&quot;Cl_a___g_ltr_&quot;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;testcsv.csv&quot;</span><span class="p">)</span>
+<span class="go">INFO -666- Read file testsas.sas7bdat 44 Observations for value salinity</span>
+<span class="go">DEBUG -648- New OBS for value:Cl_a___g_ltr_ COLMS:5 testcsv.csv</span>
+<span class="go">DEBUG -649- [&#39;date&#39;, &#39;station&#39;, &#39;rep&#39;, &#39;TSS&#39;, &#39;CFTSS&#39;, &#39;Cl_a___g_ltr_&#39;, &#39;NH4___mol_l_&#39;, &#39;Nox___mol_l_&#39;, &#39;SiO4___mol_l_&#39;, &#39;Ophos___mol_l_&#39;, &#39;Temp&#39;, &#39;Depth&#39;, &#39;pH&#39;, &#39;DO_&#39;, &#39;DO_mg_l&#39;, &#39;salinity&#39;, &#39;turbidity__ntu_&#39;, &#39;conductivity&#39;]</span>
+<span class="go">INFO -666- Read file testcsv.csv 44 Observations for value Cl_a___g_ltr_</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sasob</span><span class="o">.</span><span class="n">Print</span><span class="p">()</span>
+<span class="go">Cl_a___g_ltr_  from  testcsv.csv</span>
+<span class="go">2011-10-21 M:  4.465 E: 0.429563732175</span>
+<span class="go">Values:             [4.7999999999999998, 4.9699999999999998, 3.9500000000000002, 4.1399999999999997]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="emlib.Observation.Draw">
+<code class="descname">Draw</code><span class="sig-paren">(</span><em>block=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Observation.Draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Observation.Draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot Observations</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>block</strong> &#8211; Blocking or non-blocking</td>
+</tr>
+</tbody>
+</table>
+<p>Simple matplotlib plotting wrapper</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.Observation.Print">
+<code class="descname">Print</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#Observation.Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.Observation.Print" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.TimeSeries">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">TimeSeries</code><span class="sig-paren">(</span><em>dirname=None</em>, <em>filename=None</em>, <em>fformat='csv'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#TimeSeries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.TimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>A series of data in time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dirname</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; optinal directory</li>
+<li><strong>filename</strong> (<em>&#8220;csv&#8221;, &#8220;sas&#8221;</em>) &#8211; filename</li>
+<li><strong>fformat</strong> &#8211; optional file format</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">TimeSeries Object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#emlib.TimeSeries" title="emlib.TimeSeries">emlib.TimeSeries</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This class object is the generic table structure EasyModeler uses
+to handle dtInput data via tables.  This class of data differes from
+<a class="reference internal" href="#emlib.Observation" title="emlib.Observation"><code class="xref py py-class docutils literal"><span class="pre">emlib.Observation</span></code></a> in that measurements are discrete: only one measurement of a variable is
+made at a specific time.  This data is used to feed a <a class="reference internal" href="#emlib.Model" title="emlib.Model"><code class="xref py py-class docutils literal"><span class="pre">emlib.Model</span></code></a> with dtInput data.   For validating
+model responses use <a class="reference internal" href="#emlib.Observation" title="emlib.Observation"><code class="xref py py-class docutils literal"><span class="pre">emlib.Observation</span></code></a> .</p>
+<p>EasyModeler 2  supports comma separated value files <em>CSV</em> and <em>SAS</em> 7 binary.</p>
+<p>For CSV files the first row includes the header labels and first column is datetime 
+in the form mm/dd/yyyy.  Future planned expansions will increase this functionality.</p>
+<p>For SAS files the first column is a SAS datetime object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">CSV Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>You have a table of data in the form of a .CSV file stored as <strong>/mydata/monthlyphysical.csv</strong>. 
+Some of the cells may contain empty <em>Null</em> strings:</li>
+</ul>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="33%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DATE</th>
+<th class="head">SALINITY</th>
+<th class="head">TEMP</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>01/20/2013</td>
+<td>30.2</td>
+<td>22.5</td>
+</tr>
+<tr class="row-odd"><td>02/19/2013</td>
+<td>20.2</td>
+<td>15.3</td>
+</tr>
+<tr class="row-even"><td>03/20/2013</td>
+<td>&nbsp;</td>
+<td>24.2</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<ul>
+<li><p class="first">Creating the TimeSeries object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myData</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">dirname</span><span class="o">=</span><span class="s">&quot;mydata&quot;</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;monthlyphysical.csv&quot;</span><span class="p">)</span>
+<span class="go">DEBUG -202- New INPUT table mydata\monthlyphysical.csv[&#39;DATE&#39;, &#39;SALINITY&#39;, &#39;TEMP&#39;]</span>
+<span class="go">DEBUG -212- Saved 3 rows and 2 columns</span>
+<span class="go">DEBUG -214- Converted dates to contiguous np.array</span>
+<span class="go">DEBUG -216- Converted input data to contiguous np.array</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">EasyModeler separates time and data arrays as a design decision.  EasyModeler converts time to :mod:datetime objects.  To access the date array use the member <strong>.T</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">myData</span><span class="o">.</span><span class="n">T</span>
+<span class="go">[2013-01-20 2013-02-19 2013-3-20]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Missing Values:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>EasyModeler coverts blank <em>missing</em> values in data streams as <code class="xref py py-class docutils literal"><span class="pre">numpy.nan</span></code> objects.  This is advantageous for plotting and numerical operations.
+Each non-date cell is passed to <a class="reference internal" href="#emlib.NuN" title="emlib.NuN"><code class="xref py py-func docutils literal"><span class="pre">emlib.NuN()</span></code></a> for conversion to <code class="xref py py-func docutils literal"><span class="pre">float()</span></code> values.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">For more information about how <a class="reference internal" href="#emlib.NuN" title="emlib.NuN"><code class="xref py py-func docutils literal"><span class="pre">emlib.NuN()</span></code></a> handles empty strings and numerical conversions see it&#8217;s documentation.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">SAS Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>File baywater.sas7bat is a SAS binary file stored in the working directory.  In SAS 9.3 a snippet of the  table view is:</li>
+</ul>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="33%" />
+<col width="30%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">DATE</th>
+<th class="head">SALINITY</th>
+<th class="head">TEMP</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>21OCT2011</td>
+<td>40.29</td>
+<td>23.03</td>
+</tr>
+<tr class="row-odd"><td>02NOV2011</td>
+<td>20.2</td>
+<td>15.3</td>
+</tr>
+<tr class="row-even"><td>09NOV2011</td>
+<td>&nbsp;</td>
+<td>24.2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p class="first">Creating the TimeSeries object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myData</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;baywater.sas7bat&quot;</span><span class="p">,</span> <span class="n">fformat</span><span class="o">=</span><span class="s">&quot;sas&quot;</span><span class="p">)</span>
+<span class="go">INFO -748- New TimeSeries instance: 1</span>
+<span class="go">DEBUG -778- New INPUT table testsas.sas7bdat[u&#39;date&#39;, u&#39;station&#39;, u&#39;rep&#39;, u&#39;TSS&#39;, u&#39;CFTSS&#39;, u&#39;Cl_a___g_ltr_&#39;, u&#39;NH4___mol_l_&#39;, u&#39;Nox___mol_l_&#39;, u&#39;SiO4___mol_l_&#39;, u&#39;Ophos___mol_l_&#39;, u&#39;Temp&#39;, u&#39;Depth&#39;, u&#39;pH&#39;, u&#39;DO_&#39;, u&#39;DO_mg_l&#39;, u&#39;salinity&#39;, u&#39;turbidity__ntu_&#39;, u&#39;conductivity&#39;]</span>
+<span class="go">DEBUG -805- Saved 177 rows and 17 columns</span>
+<span class="go">DEBUG -807- Converted dates to contiguous np.array</span>
+<span class="go">DEBUG -809- Converted input data to contiguous np.array</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<dl class="method">
+<dt id="emlib.TimeSeries.Draw">
+<code class="descname">Draw</code><span class="sig-paren">(</span><em>block=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#TimeSeries.Draw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.TimeSeries.Draw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot TimeSeries</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>block</strong> &#8211; Blocking or non-blocking</td>
+</tr>
+</tbody>
+</table>
+<p>Simple matplotlib plotting wrapper</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.TimeSeries.Get">
+<code class="descname">Get</code><span class="sig-paren">(</span><em>columnLabel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#TimeSeries.Get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.TimeSeries.Get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a column as array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>columnLabel</strong> &#8211; The column to return</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float,np.Nan,str,...</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p class="first">Simple grab:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">salinity</span> <span class="o">=</span>  <span class="n">myTable</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s">&quot;SALINITY&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.TimeSeries.GetLabels">
+<code class="descname">GetLabels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#TimeSeries.GetLabels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.TimeSeries.GetLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple procedure to get array of string labels</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p class="first">Simple print:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">myTable</span><span class="o">.</span><span class="n">GetLabels</span><span class="p">()</span>
+<span class="go">[&#39;SALINITY&#39;, &#39;TEMP&#39;]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="emlib.TimeSeries.Print">
+<code class="descname">Print</code><span class="sig-paren">(</span><em>column=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#TimeSeries.Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.TimeSeries.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints entire TimeSeries, or column, to <strong>STDOUT</strong>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="emlib.dtInput">
+<em class="property">class </em><code class="descclassname">emlib.</code><code class="descname">dtInput</code><span class="sig-paren">(</span><em>labels</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#dtInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.dtInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal structure for handling dTinput</p>
+<dl class="method">
+<dt id="emlib.dtInput.Val">
+<code class="descname">Val</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#dtInput.Val"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.dtInput.Val" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="emlib.mmddyyyy2date">
+<code class="descclassname">emlib.</code><code class="descname">mmddyyyy2date</code><span class="sig-paren">(</span><em>datestr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/emlib.html#mmddyyyy2date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#emlib.mmddyyyy2date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts mm/dd/yyyy str into a <a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.date" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.date</span></code></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>datestr</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The mm/dd/yyyy string to convert.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">date</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.date" title="(in Python v2.7)">datetime.date</a></td>
+</tr>
+</tbody>
+</table>
+<p>Method converts a date string in the form mm/dd/yyyy into a <a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.date" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.date</span></code></a> object.
+Text deliminators are expected in the input string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Example:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<p>Converting a datestring to <a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.date" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.date</span></code></a> object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">toTest</span> <span class="o">=</span> <span class="s">&quot;05/20/2013&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">date</span> <span class="o">=</span> <span class="n">mmddyy2date</span><span class="p">(</span><span class="n">toTest</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">date</span>
+<span class="go">2013-05-20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="go">&lt;type &#39;datetime.date&#39;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices">
+<h1>Indices<a class="headerlink" href="#indices" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EasyModeler 2</a><ul>
+<li><a class="reference internal" href="#guides-and-examples">Guides and Examples</a></li>
+<li><a class="reference internal" href="#module-emlib">Library Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices">Indices</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="next chapter">Download and Install</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, Evan L Turner.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3b3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.1</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a></li>
+    </div>
+
+    
+
+    
+  </body>
+</html>
